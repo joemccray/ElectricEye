@@ -17,13 +17,9 @@
 #KIND, either express or implied.  See the License for the
 #specific language governing permissions and limitations
 #under the License.
-import datetime
-import json
-import os
 import pytest
-from botocore.stub import Stubber, ANY
+from botocore.stub import Stubber
 
-from . import context
 from auditors.aws.Amazon_EC2_Image_Builder_Auditor import (
     imagebuilder_pipeline_tests_enabled_check,
     imagebuilder_ebs_encryption_check,

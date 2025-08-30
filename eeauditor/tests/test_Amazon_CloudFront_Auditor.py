@@ -18,14 +18,10 @@
 #specific language governing permissions and limitations
 #under the License.
 import datetime
-from typing import NewType
 import pytest
-import os
-import sys
 
-from botocore.stub import Stubber, ANY
+from botocore.stub import Stubber
 
-from . import context
 from auditors.aws.Amazon_CloudFront_Auditor import (
     cloudfront_active_trusted_signers_check,
     cloudfront_origin_shield_check,

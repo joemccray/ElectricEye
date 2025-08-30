@@ -92,7 +92,7 @@ class AmazonSqsProvider(object):
             # Send to SQS
             self.send_message_to_sqs(batch)
 
-        print(f"Done sending all findings to Amazon SQS!")
+        print("Done sending all findings to Amazon SQS!")
     
     '''
     # This was meant for using the BatchSendMessage API which requires a message ID for each of the messages in a batch

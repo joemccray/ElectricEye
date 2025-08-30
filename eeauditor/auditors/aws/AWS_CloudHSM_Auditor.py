@@ -184,7 +184,7 @@ def cloudhsm_hsm_degradation_check(cache: dict, session, awsAccountId: str, awsR
         # B64 encode all of the details for the Asset
         assetJson = json.dumps(clstr,default=str).encode("utf-8")
         assetB64 = base64.b64encode(assetJson)
-        clusterId = clstr["ClusterId"]
+        clstr["ClusterId"]
         for hsm in clstr['Hsms']:
             HsmId = hsm['HsmId']
             if hsm["State"] != "DEGRADED":

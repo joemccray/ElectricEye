@@ -75,7 +75,7 @@ def servicenow_sspm_contextual_security_role_mgmt_plugin_check(cache: dict, awsA
     # as a failed finding with a lot less fan fair
     pluginFinder = next((plugin for plugin in pluginsCache if plugin["sys_id"] == pluginId), False)
     # If we cannot find the property set "NOT_CONFIGURED" which will fail whatever the value should be
-    if pluginFinder == False:
+    if not pluginFinder:
         pluginActivityStatus = "inactive"
         pluginState = "uninstalled"
         pluginName = "Contextual Security: Role Management V2"
@@ -283,7 +283,7 @@ def servicenow_sspm_explicit_role_plugin_check(cache: dict, awsAccountId: str, a
     # as a failed finding with a lot less fan fair
     pluginFinder = next((plugin for plugin in pluginsCache if plugin["sys_id"] == pluginId), False)
     # If we cannot find the property set "NOT_CONFIGURED" which will fail whatever the value should be
-    if pluginFinder == False:
+    if not pluginFinder:
         pluginActivityStatus = "inactive"
         pluginState = "uninstalled"
         pluginName = "Explicit Role"
@@ -491,7 +491,7 @@ def servicenow_sspm_saml20_web_browser_sso_profile_plugin_check(cache: dict, aws
     # as a failed finding with a lot less fan fair
     pluginFinder = next((plugin for plugin in pluginsCache if plugin["sys_id"] == pluginId), False)
     # If we cannot find the property set "NOT_CONFIGURED" which will fail whatever the value should be
-    if pluginFinder == False:
+    if not pluginFinder:
         pluginActivityStatus = "inactive"
         pluginState = "uninstalled"
         pluginName = "SAML 2.0 Single Sign-On"
@@ -699,7 +699,7 @@ def servicenow_sspm_security_jumpstart_plugin_check(cache: dict, awsAccountId: s
     # as a failed finding with a lot less fan fair
     pluginFinder = next((plugin for plugin in pluginsCache if plugin["sys_id"] == pluginId), False)
     # If we cannot find the property set "NOT_CONFIGURED" which will fail whatever the value should be
-    if pluginFinder == False:
+    if not pluginFinder:
         pluginActivityStatus = "inactive"
         pluginState = "uninstalled"
         pluginName = "Security Jump Start (ACL Rules)"
@@ -907,7 +907,7 @@ def servicenow_sspm_snc_access_control_plugin_check(cache: dict, awsAccountId: s
     # as a failed finding with a lot less fan fair
     pluginFinder = next((plugin for plugin in pluginsCache if plugin["sys_id"] == pluginId), False)
     # If we cannot find the property set "NOT_CONFIGURED" which will fail whatever the value should be
-    if pluginFinder == False:
+    if not pluginFinder:
         pluginActivityStatus = "inactive"
         pluginState = "uninstalled"
         pluginName = "SNC Access Control"
@@ -1115,7 +1115,7 @@ def servicenow_sspm_email_spam_scoring_filtering_plugin_check(cache: dict, awsAc
     # as a failed finding with a lot less fan fair
     pluginFinder = next((plugin for plugin in pluginsCache if plugin["sys_id"] == pluginId), False)
     # If we cannot find the property set "NOT_CONFIGURED" which will fail whatever the value should be
-    if pluginFinder == False:
+    if not pluginFinder:
         pluginActivityStatus = "inactive"
         pluginState = "uninstalled"
         pluginName = "Email Filters"

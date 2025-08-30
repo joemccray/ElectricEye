@@ -1,0 +1,6 @@
+IMPLEMENT: <feature-name>
+- UPDATE: <path/to/file.py> …
+- ADD: <new/file.py> …
+- ADD TEST: tests/test_<feature>_e2e.py
+- VERIFY: run `pytest`; paste failures; iterate
+- RECORD ADR: `python scripts/adr_add.py "<title>"`

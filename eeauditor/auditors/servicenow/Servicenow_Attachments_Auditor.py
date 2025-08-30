@@ -76,7 +76,7 @@ def servicenow_sspm_downloadable_mime_types_check(cache: dict, awsAccountId: str
     # as a failed finding with a lot less fan fair
     propFinder = next((sysprop for sysprop in sysPropCache if sysprop["name"] == evalTarget), False)
     # If we cannot find the property set "NOT_CONFIGURED" which will fail whatever the value should be
-    if propFinder == False:
+    if not propFinder:
         propertyValue = "NOT_CONFIGURED"
         propDescription = ""
         propId = ""
@@ -272,7 +272,7 @@ def servicenow_sspm_enable_deny_list_for_attachments_check(cache: dict, awsAccou
     # as a failed finding with a lot less fan fair
     propFinder = next((sysprop for sysprop in sysPropCache if sysprop["name"] == evalTarget), False)
     # If we cannot find the property set "NOT_CONFIGURED" which will fail whatever the value should be
-    if propFinder == False:
+    if not propFinder:
         propertyValue = "NOT_CONFIGURED"
         propDescription = ""
         propId = ""
@@ -468,7 +468,7 @@ def servicenow_sspm_enable_file_download_restrictions_check(cache: dict, awsAcco
     # as a failed finding with a lot less fan fair
     propFinder = next((sysprop for sysprop in sysPropCache if sysprop["name"] == evalTarget), False)
     # If we cannot find the property set "NOT_CONFIGURED" which will fail whatever the value should be
-    if propFinder == False:
+    if not propFinder:
         propertyValue = "NOT_CONFIGURED"
         propDescription = ""
         propId = ""
@@ -664,7 +664,7 @@ def servicenow_sspm_strict_user_image_upload_check(cache: dict, awsAccountId: st
     # as a failed finding with a lot less fan fair
     propFinder = next((sysprop for sysprop in sysPropCache if sysprop["name"] == evalTarget), False)
     # If we cannot find the property set "NOT_CONFIGURED" which will fail whatever the value should be
-    if propFinder == False:
+    if not propFinder:
         propertyValue = "NOT_CONFIGURED"
         propDescription = ""
         propId = ""
@@ -860,7 +860,7 @@ def servicenow_sspm_force_download_mime_types_check(cache: dict, awsAccountId: s
     # as a failed finding with a lot less fan fair
     propFinder = next((sysprop for sysprop in sysPropCache if sysprop["name"] == evalTarget), False)
     # If we cannot find the property set "NOT_CONFIGURED" which will fail whatever the value should be
-    if propFinder == False:
+    if not propFinder:
         propertyValue = "NOT_CONFIGURED"
         propDescription = ""
         propId = ""
@@ -1056,7 +1056,7 @@ def servicenow_sspm_restrict_file_restrictions_check(cache: dict, awsAccountId: 
     # as a failed finding with a lot less fan fair
     propFinder = next((sysprop for sysprop in sysPropCache if sysprop["name"] == evalTarget), False)
     # If we cannot find the property set "NOT_CONFIGURED" which will fail whatever the value should be
-    if propFinder == False:
+    if not propFinder:
         propertyValue = "NOT_CONFIGURED"
         propDescription = ""
         propId = ""
@@ -1252,7 +1252,7 @@ def servicenow_sspm_restrict_unauthenticated_attachment_access_check(cache: dict
     # as a failed finding with a lot less fan fair
     propFinder = next((sysprop for sysprop in sysPropCache if sysprop["name"] == evalTarget), False)
     # If we cannot find the property set "NOT_CONFIGURED" which will fail whatever the value should be
-    if propFinder == False:
+    if not propFinder:
         propertyValue = "NOT_CONFIGURED"
         propDescription = ""
         propId = ""
@@ -1448,7 +1448,7 @@ def servicenow_sspm_specify_excluded_attachments_check(cache: dict, awsAccountId
     # as a failed finding with a lot less fan fair
     propFinder = next((sysprop for sysprop in sysPropCache if sysprop["name"] == evalTarget), False)
     # If we cannot find the property set "NOT_CONFIGURED" which will fail whatever the value should be
-    if propFinder == False:
+    if not propFinder:
         propertyValue = "NOT_CONFIGURED"
         propDescription = ""
         propId = ""
@@ -1644,7 +1644,7 @@ def servicenow_sspm_specify_excluded_attachments_mime_type_check(cache: dict, aw
     # as a failed finding with a lot less fan fair
     propFinder = next((sysprop for sysprop in sysPropCache if sysprop["name"] == evalTarget), False)
     # If we cannot find the property set "NOT_CONFIGURED" which will fail whatever the value should be
-    if propFinder == False:
+    if not propFinder:
         propertyValue = "NOT_CONFIGURED"
         propDescription = ""
         propId = ""
@@ -1840,7 +1840,7 @@ def servicenow_sspm_restrict_downloaded_file_types_check(cache: dict, awsAccount
     # as a failed finding with a lot less fan fair
     propFinder = next((sysprop for sysprop in sysPropCache if sysprop["name"] == evalTarget), False)
     # If we cannot find the property set "NOT_CONFIGURED" which will fail whatever the value should be
-    if propFinder == False:
+    if not propFinder:
         propertyValue = "NOT_CONFIGURED"
         propDescription = ""
         propId = ""
@@ -2036,7 +2036,7 @@ def servicenow_sspm_upload_mime_type_restriction_check(cache: dict, awsAccountId
     # as a failed finding with a lot less fan fair
     propFinder = next((sysprop for sysprop in sysPropCache if sysprop["name"] == evalTarget), False)
     # If we cannot find the property set "NOT_CONFIGURED" which will fail whatever the value should be
-    if propFinder == False:
+    if not propFinder:
         propertyValue = "NOT_CONFIGURED"
         propDescription = ""
         propId = ""

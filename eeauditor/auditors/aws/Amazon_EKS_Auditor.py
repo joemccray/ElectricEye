@@ -65,7 +65,7 @@ def eks_public_endpoint_access_check(cache: dict, session, awsAccountId: str, aw
         clusterName = str(cluster["cluster"]["name"])
         clusterArn = str(cluster["cluster"]["arn"])
         k8sVersion = str(cluster["cluster"]["version"])
-        if cluster["cluster"]["resourcesVpcConfig"]["endpointPublicAccess"] == True:
+        if cluster["cluster"]["resourcesVpcConfig"]["endpointPublicAccess"]:
             finding = {
                 "SchemaVersion": "2018-10-08",
                 "Id": clusterArn + "/public-endpoint-access-check",
@@ -318,7 +318,7 @@ def eks_latest_k8s_version_check(cache: dict, session, awsAccountId: str, awsReg
                 "UpdatedAt": iso8601Time,
                 "Severity": {"Label": "MEDIUM"},
                 "Confidence": 99,
-                "Title": f"[EKS.2] Elastic Kubernetes Service (EKS) clusters should utilize the most up-to-date Kubernetes version",
+                "Title": "[EKS.2] Elastic Kubernetes Service (EKS) clusters should utilize the most up-to-date Kubernetes version",
                 "Description": f"Elastic Kubernetes Service (EKS) cluster {clusterName} is not utilizing the most up-to-date Kubernetes version. Unless your application requires a specific version of Kubernetes, AWS recommends you choose the latest available Kubernetes version supported by Amazon EKS for your clusters. Refer to the remediation instructions if this configuration is not intended.",
                 "Remediation": {
                     "Recommendation": {
@@ -449,7 +449,7 @@ def eks_logging_audit_auth_check(cache: dict, session, awsAccountId: str, awsReg
         k8sVersion = str(cluster["cluster"]["version"])
         logInfo = cluster["cluster"]["logging"]["clusterLogging"]
         for logs in logInfo:
-            if logs["enabled"] == True:
+            if logs["enabled"]:
                 logTypes = logs["types"]
                 if ("authenticator" or "audit") in logTypes:
                     finding = {
@@ -767,7 +767,7 @@ def eks_deprecated_k8s_version_check(cache: dict, session, awsAccountId: str, aw
                 "UpdatedAt": iso8601Time,
                 "Severity": {"Label": "HIGH"},
                 "Confidence": 99,
-                "Title": f"[EKS.5] Elastic Kubernetes Service (EKS) clusters should not use deprecated Kubernetes version",
+                "Title": "[EKS.5] Elastic Kubernetes Service (EKS) clusters should not use deprecated Kubernetes version",
                 "Description": f"Elastic Kubernetes Service (EKS) cluster {clusterName} is using a deprecated Kubernetes version. Unless your application requires a specific version of Kubernetes, AWS recommends you choose the latest available Kubernetes version supported by Amazon EKS for your clusters. Refer to the remediation instructions if this configuration is not intended.",
                 "Remediation": {
                     "Recommendation": {
@@ -831,7 +831,7 @@ def eks_deprecated_k8s_version_check(cache: dict, session, awsAccountId: str, aw
                 "UpdatedAt": iso8601Time,
                 "Severity": {"Label": "INFORMATIONAL"},
                 "Confidence": 99,
-                "Title": f"[EKS.5] Elastic Kubernetes Service (EKS) clusters should not use deprecated Kubernetes version",
+                "Title": "[EKS.5] Elastic Kubernetes Service (EKS) clusters should not use deprecated Kubernetes version",
                 "Description": f"Elastic Kubernetes Service (EKS) cluster {clusterName} is not using a deprecated Kubernetes version.",
                 "Remediation": {
                     "Recommendation": {

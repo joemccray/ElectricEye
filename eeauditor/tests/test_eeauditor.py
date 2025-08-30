@@ -17,11 +17,8 @@
 #KIND, either express or implied.  See the License for the
 #specific language governing permissions and limitations
 #under the License.
-import json
 
-from . import context
 from eeauditor import EEAuditor
-from .test_modules.plugin1 import plugin_func_1
 
 
 def test_eeauditor_plugin_loader():

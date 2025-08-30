@@ -169,7 +169,7 @@ class CloudConfig(object):
                         ociTenancyId, ociUserId, ociRegionName, ociCompartments, ociUserApiKeyFingerprint, ociUserApiKeyPemValue
                         ]
                     ):
-                    logger.error(f"One of your Oracle Cloud TOML entries in [regions_and_accounts.oci] or [credentials.oci] is empty!")
+                    logger.error("One of your Oracle Cloud TOML entries in [regions_and_accounts.oci] or [credentials.oci] is empty!")
                     sys.exit(2)
 
                 # Assign ["regions_and_accounts"]["oci"] values to `self`
@@ -313,7 +313,7 @@ class CloudConfig(object):
                         snowInstanceName, snowInstanceRegion, snowUserName, snowUserLoginBreachRate
                         ]
                     ):
-                    logger.error(f"One of your ServiceNow TOML entries in [credentials.servicenow] is empty!")
+                    logger.error("One of your ServiceNow TOML entries in [credentials.servicenow] is empty!")
                     sys.exit(2)
                 
                 # Retrieve ServiceNow ElectricEye user password
@@ -353,7 +353,7 @@ class CloudConfig(object):
                         m365ClientId, m365SecretId, m365TenantId, m365TenantLocation
                         ]
                     ):
-                    logger.error(f"One of your M365 TOML entries in [credentials.m365] is empty!")
+                    logger.error("One of your M365 TOML entries in [credentials.m365] is empty!")
                     sys.exit(2)
 
                 # This value (tenant location) will always be in plaintext
@@ -419,7 +419,7 @@ class CloudConfig(object):
                         salesforceAppClientId, salesforceAppClientSecret, salesforceApiUsername, salesforceApiPassword, salesforceUserSecurityToken, salesforceInstanceLocation, salesforceFailedLoginBreachingRate, salesforceApiVersion
                         ]
                     ):
-                    logger.error(f"One of your Salesforce TOML entries in [credentials.salesforce] is empty!")
+                    logger.error("One of your Salesforce TOML entries in [credentials.salesforce] is empty!")
                     sys.exit(2)
 
                 # The failed login breaching rate and API Version will be in plaintext/env vars
@@ -514,7 +514,7 @@ class CloudConfig(object):
                         snowflakeUsername, snowflakePasswordValue, snowflakeAccountId, snowflakeWarehouseName, snowflakeRegion
                         ]
                     ):
-                    logger.error(f"One of your Snowflake TOML entries in [credentials.snowflake] is empty!")
+                    logger.error("One of your Snowflake TOML entries in [credentials.snowflake] is empty!")
                     sys.exit(2)
 
                 # Parse non-confidential values to environ

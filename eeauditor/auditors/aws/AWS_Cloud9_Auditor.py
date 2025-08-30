@@ -43,7 +43,7 @@ def cloud9_ssm_access_check(cache: dict, session, awsAccountId: str, awsRegion: 
                 # This is a failing check - SSM gives you private connection
                 try:
                     connectEnv = str(env["connectionType"])
-                except:
+                except Exception:
                     connectEnv = 'NONE_FOUND'
                 # Try again
                 if connectEnv != "CONNECT_SSM":

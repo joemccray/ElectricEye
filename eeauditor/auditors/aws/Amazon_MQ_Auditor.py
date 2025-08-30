@@ -1081,17 +1081,6 @@ def public_amazon_mq_broker_shodan_check(cache: dict, session, awsAccountId: str
                         "AssetService": "Amazon MQ",
                         "AssetComponent": "Broker"
                     },
-                    "ProductFields": {
-                        "ProductName": "ElectricEye",
-                        "Provider": "AWS",
-                        "ProviderType": "CSP",
-                        "ProviderAccountId": awsAccountId,
-                        "AssetRegion": awsRegion,
-                        "AssetDetails": assetB64,
-                        "AssetClass": "Application Integration",
-                        "AssetService": "Amazon MQ",
-                        "AssetComponent": "Broker"
-                    },
                     "Resources": [
                         {
                             "Type": "AwsMqMessageBroker",

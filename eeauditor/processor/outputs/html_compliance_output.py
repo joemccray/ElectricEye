@@ -659,7 +659,7 @@ class JsonProvider(object):
         # AICPA TSC/SOC
         elif framework == "AICPA TSC":
             imgSource = '<img src="https://iconography.electriceye.lol/AuditFrameworks/aicpa_soc.jpg" class="framework__header__image">'
-            frameworkInfo = f"""
+            frameworkInfo = """
                 The 2017 Trust Services Criteria for Security, Availability, Processing Integrity, Confidentiality, and Privacy presents control criteria established by the Assurance Services Executive Committee (ASEC) of the AICPA for use in attestation or consulting engagements to evaluate and report on controls over the security, availability, processing integrity, confidentiality, or privacy of information and systems (a) across an entire entity; (b) at a subsidiary, division, or operating unit level; (c) within a function relevant to the entity's operational, reporting, or compliance objectives; or (d) for a particular type of information used by the entity. The trust services criteria were designed to provide flexibility in application and use for a variety of different subject matters. The following are the types of subject matters a practitioner may be engaged to report on using the trust services criteria:</br>
                 
                 </br>The effectiveness of controls within an entity's cybersecurity risk management program to achieve the entity's cybersecurity objectives using the trust services criteria relevant to security, availability, and confidentiality as control criteria in a SOC for Cybersecurity examination.</br>

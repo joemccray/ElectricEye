@@ -19,7 +19,6 @@
 #under the License.
 
 from azure.mgmt.compute import ComputeManagementClient, models
-from azure.mgmt.network import NetworkManagementClient
 from azure.mgmt.resource import ResourceManagementClient
 from azure.mgmt.recoveryservices import RecoveryServicesClient
 from azure.mgmt.recoveryservicesbackup import RecoveryServicesBackupClient

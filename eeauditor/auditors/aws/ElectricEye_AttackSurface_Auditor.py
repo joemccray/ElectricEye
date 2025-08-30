@@ -213,7 +213,7 @@ def ec2_attack_surface_open_tcp_port_check(cache: dict, session, awsAccountId: s
         else:
             scanner = scan_host(hostIp, instanceId, "EC2 Instance")
             # NoneType returned on KeyError due to Nmap errors
-            if scanner == None:
+            if scanner is None:
                 continue
             else:
                 # Loop the results of the scan - starting with Open Ports which require a combination of
@@ -421,7 +421,7 @@ def elbv2_attack_surface_open_tcp_port_check(cache: dict, session, awsAccountId:
         if (elbv2Scheme == 'internet-facing' and elbv2LbType == 'application'):
             scanner = scan_host(elbv2DnsName, elbv2Name, "Application load balancer")
             # NoneType returned on KeyError due to Nmap errors
-            if scanner == None:
+            if scanner is None:
                 continue
             else:
                 # Pull out the IP resolution of the DNS Name
@@ -634,7 +634,7 @@ def elb_attack_surface_open_tcp_port_check(cache: dict, session, awsAccountId: s
         if clbScheme == 'internet-facing':
             scanner = scan_host(dnsName, clbName)
             # NoneType returned on KeyError due to Nmap errors
-            if scanner == None:
+            if scanner is None:
                 continue
             else:
                 # Pull out the IP resolution of the DNS Name
@@ -847,7 +847,7 @@ def eip_attack_surface_open_tcp_port_check(cache: dict, session, awsAccountId: s
         # Logic time
         scanner = scan_host(publicIp, allocationId, "Elastic IP")
         # NoneType returned on KeyError due to Nmap errors
-        if scanner == None:
+        if scanner is None:
             continue
         else:
             # Loop the results of the scan - starting with Open Ports which require a combination of
@@ -1045,7 +1045,7 @@ def cloudfront_attack_surface_open_tcp_port_check(cache: dict, session, awsAccou
         # Logic time
         scanner = scan_host(domainName, distributionId, "CloudFront Distribution")
         # NoneType returned on KeyError due to Nmap errors
-        if scanner == None:
+        if scanner is None:
             continue
         else:
             # Pull out the IP resolution of the DNS Name
@@ -1255,7 +1255,7 @@ def route53_public_hz_attack_surface_open_tcp_port_check(cache: dict, session, a
                 # Logic time
                 scanner = scan_host(resourceRecord, hzName, "Route53 Public Hosted Zone A Record")
                 # NoneType returned on KeyError due to Nmap errors
-                if scanner == None:
+                if scanner is None:
                     continue
                 else:
                     # Pull out the IP resolution of the DNS Name

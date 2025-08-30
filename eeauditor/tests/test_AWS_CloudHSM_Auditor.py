@@ -18,13 +18,10 @@
 #specific language governing permissions and limitations
 #under the License.
 import datetime
-import json
-import os
 import pytest
 
-from botocore.stub import Stubber, ANY
+from botocore.stub import Stubber
 
-from . import context
 from auditors.aws.AWS_CloudHSM_Auditor import (
     cloudhsm_cluster_degradation_check,
     cloudhsm_hsm_degradation_check,

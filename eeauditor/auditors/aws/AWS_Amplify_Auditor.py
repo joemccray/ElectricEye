@@ -43,7 +43,7 @@ def amplify_basic_auth_enabled_check(cache: dict, session, awsAccountId: str, aw
         assetB64 = base64.b64encode(assetJson)
         appArn = apps["appArn"]
         appName = apps["name"]
-        if apps["enableBasicAuth"] == True:
+        if apps["enableBasicAuth"]:
             finding = {
                 "SchemaVersion": "2018-10-08",
                 "Id": appArn + "/amplify-basic-auth-enabled-check",
@@ -300,7 +300,7 @@ def amplify_branch_auto_deletion_enabled_check(cache: dict, session, awsAccountI
         assetB64 = base64.b64encode(assetJson)
         appArn = apps["appArn"]
         appName = apps["name"]
-        if apps["enableBranchAutoDeletion"] == False:
+        if not apps["enableBranchAutoDeletion"]:
             finding = {
                 "SchemaVersion": "2018-10-08",
                 "Id": appArn + "/amplify-branch-auto-deletion-check",

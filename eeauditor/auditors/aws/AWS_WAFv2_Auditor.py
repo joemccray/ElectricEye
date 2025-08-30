@@ -57,7 +57,7 @@ def wafv2_web_acl_metrics_check(cache: dict, session, awsAccountId: str, awsRegi
         assetJson = json.dumps(waf,default=str).encode("utf-8")
         assetB64 = base64.b64encode(assetJson)
         # This is a failing check
-        if waf["VisibilityConfig"]["CloudWatchMetricsEnabled"] == False:
+        if not waf["VisibilityConfig"]["CloudWatchMetricsEnabled"]:
             finding = {
                 "SchemaVersion": "2018-10-08",
                 "Id": wafArn + "/webacl-metrics-enabled-regional-check",

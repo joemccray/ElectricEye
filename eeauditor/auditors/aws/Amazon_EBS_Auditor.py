@@ -986,7 +986,7 @@ def ebs_account_encryption_by_default_check(cache: dict, session, awsAccountId: 
     # B64 encode all of the details for the Asset
     assetJson = json.dumps(encrDetails,default=str).encode("utf-8")
     assetB64 = base64.b64encode(assetJson)
-    if encrDetails["EbsEncryptionByDefault"] == False:
+    if not encrDetails["EbsEncryptionByDefault"]:
         finding = {
             "SchemaVersion": "2018-10-08",
             "Id": f"{awsAccountId}{awsRegion}/ebs-account-encryption-check",
@@ -1290,7 +1290,7 @@ def public_ami_check(cache: dict, session, awsAccountId: str, awsRegion: str, aw
         amiArn = f"arn:{awsPartition}:ec2:{awsRegion}::image/{imageId}"
         imageName = ami["Name"]
         imageCreatedDate = str(ami["CreationDate"])        
-        if ami["Public"] == True:
+        if ami["Public"]:
             finding = {
                 "SchemaVersion": "2018-10-08",
                 "Id": f"{amiArn}/public-ami",

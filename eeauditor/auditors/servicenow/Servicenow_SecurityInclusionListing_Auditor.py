@@ -76,7 +76,7 @@ def servicenow_sspm_url_allowlist_cors_iframe_communication_check(cache: dict, a
     # as a failed finding with a lot less fan fair
     propFinder = next((sysprop for sysprop in sysPropCache if sysprop["name"] == evalTarget), False)
     # If we cannot find the property set "NOT_CONFIGURED" which will fail whatever the value should be
-    if propFinder == False:
+    if not propFinder:
         propertyValue = "NOT_CONFIGURED"
         propDescription = ""
         propId = ""
@@ -272,7 +272,7 @@ def servicenow_sspm_enforce_relative_links_check(cache: dict, awsAccountId: str,
     # as a failed finding with a lot less fan fair
     propFinder = next((sysprop for sysprop in sysPropCache if sysprop["name"] == evalTarget), False)
     # If we cannot find the property set "NOT_CONFIGURED" which will fail whatever the value should be
-    if propFinder == False:
+    if not propFinder:
         propertyValue = "NOT_CONFIGURED"
         propDescription = ""
         propId = ""
@@ -470,7 +470,7 @@ def servicenow_sspm_specify_url_allowlists_cors_iframe_communications_check(cach
     # as a failed finding with a lot less fan fair
     propFinder = next((sysprop for sysprop in sysPropCache if sysprop["name"] == evalTarget), False)
     # If we cannot find the property set "NOT_CONFIGURED" which will fail whatever the value should be
-    if propFinder == False:
+    if not propFinder:
         propertyValue = "NOT_CONFIGURED"
         propDescription = ""
         propId = ""
@@ -666,7 +666,7 @@ def servicenow_sspm_url_allowlist_logout_redirects_check(cache: dict, awsAccount
     # as a failed finding with a lot less fan fair
     propFinder = next((sysprop for sysprop in sysPropCache if sysprop["name"] == evalTarget), False)
     # If we cannot find the property set "NOT_CONFIGURED" which will fail whatever the value should be
-    if propFinder == False:
+    if not propFinder:
         propertyValue = "NOT_CONFIGURED"
         propDescription = ""
         propId = ""
@@ -862,7 +862,7 @@ def servicenow_sspm_virtual_agent_embedded_csp_check(cache: dict, awsAccountId: 
     # as a failed finding with a lot less fan fair
     propFinder = next((sysprop for sysprop in sysPropCache if sysprop["name"] == evalTarget), False)
     # If we cannot find the property set "NOT_CONFIGURED" which will fail whatever the value should be
-    if propFinder == False:
+    if not propFinder:
         propertyValue = "NOT_CONFIGURED"
         propDescription = ""
         propId = ""
@@ -1058,7 +1058,7 @@ def servicenow_sspm_virtual_agent_embedded_xfo_check(cache: dict, awsAccountId: 
     # as a failed finding with a lot less fan fair
     propFinder = next((sysprop for sysprop in sysPropCache if sysprop["name"] == evalTarget), False)
     # If we cannot find the property set "NOT_CONFIGURED" which will fail whatever the value should be
-    if propFinder == False:
+    if not propFinder:
         propertyValue = "NOT_CONFIGURED"
         propDescription = ""
         propId = ""
@@ -1254,7 +1254,7 @@ def servicenow_sspm_xfo_sameorigin_check(cache: dict, awsAccountId: str, awsRegi
     # as a failed finding with a lot less fan fair
     propFinder = next((sysprop for sysprop in sysPropCache if sysprop["name"] == evalTarget), False)
     # If we cannot find the property set "NOT_CONFIGURED" which will fail whatever the value should be
-    if propFinder == False:
+    if not propFinder:
         propertyValue = "NOT_CONFIGURED"
         propDescription = ""
         propId = ""
@@ -1450,7 +1450,7 @@ def servicenow_sspm_xxe_entity_expansion_threshold_check(cache: dict, awsAccount
     # as a failed finding with a lot less fan fair
     propFinder = next((sysprop for sysprop in sysPropCache if sysprop["name"] == evalTarget), False)
     # If we cannot find the property set "NOT_CONFIGURED" which will fail whatever the value should be
-    if propFinder == False:
+    if not propFinder:
         propertyValue = "NOT_CONFIGURED"
         propDescription = ""
         propId = ""
@@ -1646,7 +1646,7 @@ def servicenow_sspm_xxe_xmldoc_xmlutil_entity_validation_allowlist_check(cache: 
     # as a failed finding with a lot less fan fair
     propFinder = next((sysprop for sysprop in sysPropCache if sysprop["name"] == evalTarget), False)
     # If we cannot find the property set "NOT_CONFIGURED" which will fail whatever the value should be
-    if propFinder == False:
+    if not propFinder:
         propertyValue = "NOT_CONFIGURED"
         propDescription = ""
         propId = ""
@@ -1842,7 +1842,7 @@ def servicenow_sspm_xxe_disable_entity_expansion_check(cache: dict, awsAccountId
     # as a failed finding with a lot less fan fair
     propFinder = next((sysprop for sysprop in sysPropCache if sysprop["name"] == evalTarget), False)
     # If we cannot find the property set "NOT_CONFIGURED" which will fail whatever the value should be
-    if propFinder == False:
+    if not propFinder:
         propertyValue = "NOT_CONFIGURED"
         propDescription = ""
         propId = ""
@@ -2038,7 +2038,7 @@ def servicenow_sspm_xxe_xmldoc2_entity_validation_allowlist_check(cache: dict, a
     # as a failed finding with a lot less fan fair
     propFinder = next((sysprop for sysprop in sysPropCache if sysprop["name"] == evalTarget), False)
     # If we cannot find the property set "NOT_CONFIGURED" which will fail whatever the value should be
-    if propFinder == False:
+    if not propFinder:
         propertyValue = "NOT_CONFIGURED"
         propDescription = ""
         propId = ""
@@ -2234,7 +2234,7 @@ def servicenow_sspm_xxe_processing_allowlist_check(cache: dict, awsAccountId: st
     # as a failed finding with a lot less fan fair
     propFinder = next((sysprop for sysprop in sysPropCache if sysprop["name"] == evalTarget), False)
     # If we cannot find the property set "NOT_CONFIGURED" which will fail whatever the value should be
-    if propFinder == False:
+    if not propFinder:
         propertyValue = "NOT_CONFIGURED"
         propDescription = ""
         propId = ""

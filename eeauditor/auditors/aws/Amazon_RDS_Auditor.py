@@ -374,7 +374,7 @@ def rds_instance_public_access_check(cache: dict, session, awsAccountId: str, aw
         instancePort = dbinstances["Endpoint"]["Port"]
         instanceEngine = dbinstances["Engine"]
         instanceEngineVersion = dbinstances["EngineVersion"]
-        if dbinstances["PubliclyAccessible"] == True:
+        if dbinstances["PubliclyAccessible"]:
             # this is a failing check
             finding = {
                 "SchemaVersion": "2018-10-08",
@@ -1845,7 +1845,7 @@ def rds_instance_cloudwatch_logging_check(cache: dict, session, awsAccountId: st
                 "RecordState": "ARCHIVED"
             }
             yield finding
-        except:
+        except Exception:
             finding = {
                 "SchemaVersion": "2018-10-08",
                 "Id": f"{instanceArn}/instance-database-cloudwatch-logs-check",

@@ -54,7 +54,7 @@ def codeartifact_repo_policy_check(cache: dict, session, awsAccountId: str, awsR
     iso8601Time = datetime.datetime.now(datetime.timezone.utc).isoformat()
     for repo in get_codeartifact_repos(cache, session):
         # B64 encode all of the details for the Asset
-        assetJson = json.dumps(repo,default=str).encode("utf-8")
+        assetJson = json.dumps(repo, default=str).encode("utf-8")
         assetB64 = base64.b64encode(assetJson)
         domainName = repo['domainName']
         domainOwner = repo['domainOwner']
@@ -72,8 +72,8 @@ def codeartifact_repo_policy_check(cache: dict, session, awsAccountId: str, awsR
 
             for statement in policy["Statement"]:
                 if statement["Effect"] == 'Allow':
-                    if statement.get("Principal") == '*' or len([i for i in statement['Principal'].values() if f'arn:aws:iam::{awsAccountId}:root' in i]) > 0: 
-                        if statement.get('Condition') == None: 
+                    if statement.get("Principal") == '*' or len([i for i in statement['Principal'].values() if f'arn:aws:iam::{awsAccountId}:root' in i]) > 0:
+                        if statement.get('Condition') is None:
                             # monitor for Update/Delete repo actions with no principal listed
                             if "PublishPackageVersion" in statement.get('Action') or \
                                 "PutRepositoryPermissionsPolicy" in statement.get('Action') or \
@@ -231,7 +231,7 @@ def codeartifact_domain_policy_check(cache: dict, session, awsAccountId: str, aw
     iso8601Time = datetime.datetime.now(datetime.timezone.utc).isoformat()
     for domain in get_codeartifact_domains(cache, session):
         # B64 encode all of the details for the Asset
-        assetJson = json.dumps(domain,default=str).encode("utf-8")
+        assetJson = json.dumps(domain, default=str).encode("utf-8")
         assetB64 = base64.b64encode(assetJson)
         domainName = domain['name']
         domainOwner = domain['owner']
@@ -247,8 +247,8 @@ def codeartifact_domain_policy_check(cache: dict, session, awsAccountId: str, aw
 
             for statement in policy["Statement"]:
                 if statement["Effect"] == 'Allow':
-                    if statement.get("Principal") == '*' or len([i for i in statement['Principal'].values() if f'arn:aws:iam::{awsAccountId}:root' in i]) > 0: 
-                        if statement.get('Condition') == None: 
+                    if statement.get("Principal") == '*' or len([i for i in statement['Principal'].values() if f'arn:aws:iam::{awsAccountId}:root' in i]) > 0:
+                        if statement.get('Condition') is None:
                             # monitor for Update/Delete actions with no principal listed
                             if "PublishPackageVersion" in statement.get('Action') or \
                                 "PutRepositoryPermissionsPolicy" in statement.get('Action') or \

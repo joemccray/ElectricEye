@@ -1,0 +1,16 @@
+name: adr-check
+on: [pull_request]
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Require ADR on core code changes
+        run: |
+          base="origin/${{ github.base_ref }}"
+          git fetch origin ${{ github.base_ref }} --depth=1 || true
+          changed=$(git diff --name-only "$base"... | tr '\n' ' ')
+          echo "Changed: $changed"
+          if echo "$changed" | grep -E '(config/|jobs/|integrations/)' >/dev/null; then
+            echo "$changed" | grep -q 'docs/adr/' || { echo "Changes to core code require an ADR update."; exit 1; }
+          fi

@@ -101,12 +101,12 @@ def gce_attack_surface_open_tcp_port_check(cache: dict, awsAccountId: str, awsRe
         except KeyError:
             pubIp = None
         # Skip over instances without a public IP
-        if pubIp == None:
+        if pubIp is None:
             continue
         # Submit details to the scanner function
         scanner = scan_host(pubIp, name, "GCE VM instance")
         # NoneType returned on KeyError due to Nmap errors
-        if scanner == None:
+        if scanner is None:
             continue
         else:
             # Loop the results of the scan - starting with Open Ports which require a combination of

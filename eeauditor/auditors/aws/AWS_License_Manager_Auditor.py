@@ -74,7 +74,7 @@ def license_manager_hard_count_check(cache: dict, session, awsAccountId: str, aw
         liscConfigArn = lisc["LicenseConfigurationArn"]
         liscConfigId = lisc["LicenseConfigurationId"]
         liscConfigName = lisc["Name"]
-        if lisc["LicenseCountHardLimit"] == False:
+        if not lisc["LicenseCountHardLimit"]:
             finding = {
                 "SchemaVersion": "2018-10-08",
                 "Id": liscConfigArn + "/license-manager-enforce-hard-limit-check",
@@ -221,7 +221,7 @@ def license_manager_disassociation_check(cache: dict, session, awsAccountId: str
         liscConfigArn = lisc["LicenseConfigurationArn"]
         liscConfigId = lisc["LicenseConfigurationId"]
         liscConfigName = lisc["Name"]
-        if lisc["DisassociateWhenNotFound"] == False:
+        if not lisc["DisassociateWhenNotFound"]:
             finding = {
                 "SchemaVersion": "2018-10-08",
                 "Id": liscConfigArn + "/license-manager-disassociation-check",

@@ -17,14 +17,10 @@
 #KIND, either express or implied.  See the License for the
 #specific language governing permissions and limitations
 #under the License.
-import datetime
-import os
 import pytest
-import sys
 
-from botocore.stub import Stubber, ANY
+from botocore.stub import Stubber
 
-from . import context
 from auditors.aws.AWS_Global_Accelerator_Auditor import (
     unhealthy_endpoint_group_check,
     flow_logs_enabled_check,

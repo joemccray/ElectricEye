@@ -589,7 +589,7 @@ def aws_public_lambda_layer_check(cache: dict, session, awsAccountId: str, awsRe
                 except KeyError:
                     hasCondition = False
                 # this evaluation logic is a failing check
-                if (principal == "*" and effect == "Allow" and hasCondition == False):
+                if (principal == "*" and effect == "Allow" and not hasCondition):
                     # this is a failing check
                     finding = {
                         "SchemaVersion": "2018-10-08",
@@ -831,7 +831,7 @@ def aws_public_lambda_function_check(cache: dict, session, awsAccountId: str, aw
                 except KeyError:
                     hasCondition = False
                 # this evaluation logic is a failing check
-                if (principal == "*" and effect == "Allow" and hasCondition == False):
+                if (principal == "*" and effect == "Allow" and not hasCondition):
                     # this is a failing check
                     finding = {
                         "SchemaVersion": "2018-10-08",

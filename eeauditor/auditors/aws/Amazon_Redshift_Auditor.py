@@ -332,7 +332,7 @@ def redshift_cluster_encryption_check(cache: dict, session, awsAccountId: str, a
         endpointPort = cluster["Endpoint"]["Port"]
         nodeType = cluster["NodeType"]
         vpcId = cluster["VpcId"]
-        if cluster["Encrypted"] == False:
+        if not cluster["Encrypted"]:
             # this is a failing check
             finding = {
                 "SchemaVersion": "2018-10-08",
@@ -511,7 +511,7 @@ def redshift_cluster_enhanced_vpc_routing_check(cache: dict, session, awsAccount
         endpointPort = cluster["Endpoint"]["Port"]
         nodeType = cluster["NodeType"]
         vpcId = cluster["VpcId"]
-        if cluster["EnhancedVpcRouting"] == False:
+        if not cluster["EnhancedVpcRouting"]:
             # this is a failing check
             finding = {
                 "SchemaVersion": "2018-10-08",
@@ -693,7 +693,7 @@ def redshift_cluster_logging_check(cache: dict, session, awsAccountId: str, awsR
         endpointPort = cluster["Endpoint"]["Port"]
         nodeType = cluster["NodeType"]
         vpcId = cluster["VpcId"]
-        if redshift.describe_logging_status(ClusterIdentifier=clusterId)["LoggingEnabled"] == False:
+        if not redshift.describe_logging_status(ClusterIdentifier=clusterId)["LoggingEnabled"]:
             # this is a failing check
             finding = {
                 "SchemaVersion": "2018-10-08",
@@ -1800,7 +1800,7 @@ def redshift_cluster_auto_version_upgrade_check(cache: dict, session, awsAccount
         endpointPort = cluster["Endpoint"]["Port"]
         nodeType = cluster["NodeType"]
         vpcId = cluster["VpcId"]
-        if cluster["AllowVersionUpgrade"] == False:
+        if not cluster["AllowVersionUpgrade"]:
             # this is a failing check
             finding = {
                 "SchemaVersion": "2018-10-08",

@@ -18,13 +18,10 @@
 #specific language governing permissions and limitations
 #under the License.
 import datetime
-import os
 import pytest
-import sys
 
-from botocore.stub import Stubber, ANY
+from botocore.stub import Stubber
 
-from . import context
 from auditors.aws.AWS_IAM_Auditor import (
     iam_mngd_policy_least_priv_check,
     iam_user_policy_least_priv_check,

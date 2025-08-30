@@ -353,7 +353,7 @@ def athena_encrypted_workgroup_client_override_check(cache: dict, session, awsAc
             }
             yield finding
         # this is a failing check (medium)
-        elif (encryptionOption != "NO_ENCRYPTION" and overrideConfig == False):
+        elif (encryptionOption != "NO_ENCRYPTION" and not overrideConfig):
             finding = {
                 "SchemaVersion": "2018-10-08",
                 "Id": f"{workgroupArn}/athena-encrypted-workgroup-client-override-check",
@@ -419,7 +419,7 @@ def athena_encrypted_workgroup_client_override_check(cache: dict, session, awsAc
             }
             yield finding
         # this is a passing check
-        elif (encryptionOption != "NO_ENCRYPTION" and overrideConfig == True):
+        elif (encryptionOption != "NO_ENCRYPTION" and overrideConfig):
             finding = {
                 "SchemaVersion": "2018-10-08",
                 "Id": f"{workgroupArn}/athena-encrypted-workgroup-client-override-check",
@@ -510,7 +510,7 @@ def athena_workgroup_metrics_check(cache: dict, session, awsAccountId: str, awsR
         except KeyError:
             metricsConfig = False
         # this is a failing check
-        if metricsConfig == False:
+        if not metricsConfig:
             finding = {
                 "SchemaVersion": "2018-10-08",
                 "Id": f"{workgroupArn}/athena-workgroup-metrics-check",

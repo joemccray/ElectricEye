@@ -17,14 +17,10 @@
 #KIND, either express or implied.  See the License for the
 #specific language governing permissions and limitations
 #under the License.
-import datetime
-import json
-import os
 import pytest
 
-from botocore.stub import Stubber, ANY
+from botocore.stub import Stubber
 
-from . import context
 from auditors.aws.AWS_KMS_Auditor import (
     kms_key_exposed_check,
     kms_key_rotation_check,

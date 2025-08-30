@@ -40,7 +40,7 @@ def imagebuilder_pipeline_tests_enabled_check(cache: dict, session, awsAccountId
         assetJson = json.dumps(imagePipelines,default=str).encode("utf-8")
         assetB64 = base64.b64encode(assetJson)
         imageTestConfig = imagePipelines["imagePipeline"]["imageTestsConfiguration"]
-        if imageTestConfig["imageTestsEnabled"] == True:
+        if imageTestConfig["imageTestsEnabled"]:
             finding = {
                 "SchemaVersion": "2018-10-08",
                 "Id": pipelineArn + "/imagebuilder-pipeline-tests-enabled-check",
@@ -204,7 +204,7 @@ def imagebuilder_ebs_encryption_check(cache: dict, session, awsAccountId: str, a
         deviceMapping = recipe["imageRecipe"]["blockDeviceMappings"]
         list1 = deviceMapping[0]
         ebs = list1["ebs"]
-        if ebs["encrypted"] == True:
+        if ebs["encrypted"]:
             finding = {
                 "SchemaVersion": "2018-10-08",
                 "Id": recipeArn + "/imagebuilder-ebs-encryption-check",

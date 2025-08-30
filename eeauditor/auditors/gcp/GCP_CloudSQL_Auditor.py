@@ -63,7 +63,7 @@ def cloudsql_instance_public_check(cache, awsAccountId, awsRegion, awsPartition,
         maintenanceVersion = csql["maintenanceVersion"]
         ipAddress = csql["ipAddresses"][0]["ipAddress"]
         # If this value is True, it means a Public IP is assigned
-        if csql["settings"]["ipConfiguration"]["ipv4Enabled"] == True:
+        if csql["settings"]["ipConfiguration"]["ipv4Enabled"]:
             finding = {
                 "SchemaVersion": "2018-10-08",
                 "Id": f"{gcpProjectId}/{zone}/{name}/cloudsql-public-instance-check",
@@ -311,7 +311,7 @@ def cloudsql_instance_standard_backup_check(cache, awsAccountId, awsRegion, awsP
         maintenanceVersion = csql["maintenanceVersion"]
         ipAddress = csql["ipAddresses"][0]["ipAddress"]
         # Check if basic backups are enabled - this is a failing check
-        if csql["settings"]["backupConfiguration"]["enabled"] == False:
+        if not csql["settings"]["backupConfiguration"]["enabled"]:
             finding = {
                 "SchemaVersion": "2018-10-08",
                 "Id": f"{gcpProjectId}/{zone}/{name}/cloudsql-instance-basic-backup-check",
@@ -506,7 +506,7 @@ def cloudsql_instance_mysql_pitr_backup_check(cache, awsAccountId, awsRegion, aw
         maintenanceVersion = csql["maintenanceVersion"]
         ipAddress = csql["ipAddresses"][0]["ipAddress"]
         # "binaryLogEnabled" only appears for Mysql
-        if csql["settings"]["backupConfiguration"]["binaryLogEnabled"] == False:
+        if not csql["settings"]["backupConfiguration"]["binaryLogEnabled"]:
             finding = {
                 "SchemaVersion": "2018-10-08",
                 "Id": f"{gcpProjectId}/{zone}/{name}/cloudsql-instance-mysql-pitr-backup-check",
@@ -701,7 +701,7 @@ def cloudsql_instance_psql_pitr_backup_check(cache, awsAccountId, awsRegion, aws
         maintenanceVersion = csql["maintenanceVersion"]
         ipAddress = csql["ipAddresses"][0]["ipAddress"]
         # "pointInTimeRecoveryEnabled" only appears for Psql
-        if csql["settings"]["backupConfiguration"]["pointInTimeRecoveryEnabled"] == False:
+        if not csql["settings"]["backupConfiguration"]["pointInTimeRecoveryEnabled"]:
             finding = {
                 "SchemaVersion": "2018-10-08",
                 "Id": f"{gcpProjectId}/{zone}/{name}/cloudsql-instance-psql-pitr-backup-check",
@@ -1057,7 +1057,7 @@ def cloudsql_instance_private_gcp_services_connection_check(cache, awsAccountId,
         maintenanceVersion = csql["maintenanceVersion"]
         ipAddress = csql["ipAddresses"][0]["ipAddress"]
         if "privateNetwork" in csql["settings"]["ipConfiguration"]:
-            if csql["settings"]["ipConfiguration"]["enablePrivatePathForGoogleCloudServices"] == False:
+            if not csql["settings"]["ipConfiguration"]["enablePrivatePathForGoogleCloudServices"]:
                 finding = {
                     "SchemaVersion": "2018-10-08",
                     "Id": f"{gcpProjectId}/{zone}/{name}/cloudsql-instance-private-service-acess-check",
@@ -1218,7 +1218,7 @@ def cloudsql_instance_password_policy_check(cache, awsAccountId, awsRegion, awsP
         state = csql["state"]
         maintenanceVersion = csql["maintenanceVersion"]
         ipAddress = csql["ipAddresses"][0]["ipAddress"]
-        if csql["settings"]["passwordValidationPolicy"]["enablePasswordPolicy"] == False:
+        if not csql["settings"]["passwordValidationPolicy"]["enablePasswordPolicy"]:
             finding = {
                 "SchemaVersion": "2018-10-08",
                 "Id": f"{gcpProjectId}/{zone}/{name}/cloudsql-instance-pw-policy-check",
@@ -1787,7 +1787,7 @@ def cloudsql_instance_password_username_block_check(cache, awsAccountId, awsRegi
         state = csql["state"]
         maintenanceVersion = csql["maintenanceVersion"]
         ipAddress = csql["ipAddresses"][0]["ipAddress"]
-        if csql["settings"]["passwordValidationPolicy"]["disallowUsernameSubstring"] == False:
+        if not csql["settings"]["passwordValidationPolicy"]["disallowUsernameSubstring"]:
             finding = {
                 "SchemaVersion": "2018-10-08",
                 "Id": f"{gcpProjectId}/{zone}/{name}/cloudsql-instance-pw-username-disallowed-check",
@@ -2166,7 +2166,7 @@ def cloudsql_instance_storage_autoresize_check(cache, awsAccountId, awsRegion, a
         state = csql["state"]
         maintenanceVersion = csql["maintenanceVersion"]
         ipAddress = csql["ipAddresses"][0]["ipAddress"]
-        if csql["settings"]["storageAutoResize"] == False:
+        if not csql["settings"]["storageAutoResize"]:
             finding = {
                 "SchemaVersion": "2018-10-08",
                 "Id": f"{gcpProjectId}/{zone}/{name}/cloudsql-storage-auto-resize-check",
@@ -2349,7 +2349,7 @@ def cloudsql_instance_deletion_protection_check(cache, awsAccountId, awsRegion, 
         state = csql["state"]
         maintenanceVersion = csql["maintenanceVersion"]
         ipAddress = csql["ipAddresses"][0]["ipAddress"]
-        if csql["settings"]["deletionProtectionEnabled"] == False:
+        if not csql["settings"]["deletionProtectionEnabled"]:
             finding = {
                 "SchemaVersion": "2018-10-08",
                 "Id": f"{gcpProjectId}/{zone}/{name}/cloudsql-deletion-protection-check",
@@ -2542,14 +2542,14 @@ def cloudsql_instance_query_insights_check(cache, awsAccountId, awsRegion, awsPa
         ipAddress = csql["ipAddresses"][0]["ipAddress"]
         # "insightsConfig" can be empty or have a true / false value within
         if csql["settings"]["insightsConfig"]:
-            if csql["settings"]["queryInsightsEnabled"] == True:
+            if csql["settings"]["queryInsightsEnabled"]:
                 insightQueryEnabled = True
             else:
                 insightQueryEnabled = False
         else:
             insightQueryEnabled = False
         # failing check first...
-        if insightQueryEnabled == False:
+        if not insightQueryEnabled:
             finding = {
                 "SchemaVersion": "2018-10-08",
                 "Id": f"{gcpProjectId}/{zone}/{name}/cloudsql-query-insights-check",
@@ -2722,14 +2722,14 @@ def cloudsql_instance_tls_enforcement_check(cache, awsAccountId, awsRegion, awsP
         ipAddress = csql["ipAddresses"][0]["ipAddress"]
         # "requireSsl" is not always present if it wasn't enabled from instance creation
         if "requireSsl" in csql["settings"]["ipConfiguration"]:
-            if csql["settings"]["ipConfiguration"]["requireSsl"] == False:
+            if not csql["settings"]["ipConfiguration"]["requireSsl"]:
                 tlsEnforcement = False
             else:
                 tlsEnforcement = True
         else:
             tlsEnforcement = False
         # failing check first...
-        if tlsEnforcement == False:
+        if not tlsEnforcement:
             finding = {
                 "SchemaVersion": "2018-10-08",
                 "Id": f"{gcpProjectId}/{zone}/{name}/cloudsql-tls-enforcement-check",

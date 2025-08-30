@@ -114,7 +114,7 @@ def sns_topic_encryption_check(cache: dict, session, awsAccountId: str, awsRegio
                 "RecordState": "ARCHIVED",
             }
             yield finding
-        except:
+        except Exception:
             finding = {
                 "SchemaVersion": "2018-10-08",
                 "Id": topicarn + "/sns-topic-encryption-check",
@@ -191,7 +191,7 @@ def sns_http_encryption_check(cache: dict, session, awsAccountId: str, awsRegion
             f"arn:{awsPartition}:sns:{awsRegion}:{awsAccountId}:", ""
         )
         httpSubCheck = [subscription["Protocol"] == "http" for subscription in sns.list_subscriptions_by_topic(TopicArn=topicarn)["Subscriptions"]]
-        if httpSubCheck == True:
+        if httpSubCheck:
             finding = {
                 "SchemaVersion": "2018-10-08",
                 "Id": topicarn + "/sns-http-subscription-check",

@@ -1926,7 +1926,7 @@ def public_alb_shodan_check(cache: dict, session, awsAccountId: str, awsRegion: 
     # ISO Time
     iso8601time = datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat()
     for lb in describe_load_balancers(cache, session):
-        if shodanApiKey == None:
+        if shodanApiKey is None:
             continue
         # B64 encode all of the details for the Asset
         assetJson = json.dumps(lb,default=str).encode("utf-8")

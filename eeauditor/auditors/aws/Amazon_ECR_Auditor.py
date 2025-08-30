@@ -52,7 +52,7 @@ def ecr_repo_vuln_scan_check(cache: dict, session, awsAccountId: str, awsRegion:
 
         # Determine if a Repository is scanned by checking both for Basic (ECR built-in) and Enhanced (Inspector V2) scanning
         # built-in
-        if repo["imageScanningConfiguration"]["scanOnPush"] == False:
+        if not repo["imageScanningConfiguration"]["scanOnPush"]:
             basicScan = False
         else:
             basicScan = True

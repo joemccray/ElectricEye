@@ -17,14 +17,10 @@
 #KIND, either express or implied.  See the License for the
 #specific language governing permissions and limitations
 #under the License.
-import datetime
-import os
 import pytest
-import sys
 
-from botocore.stub import Stubber, ANY
+from botocore.stub import Stubber
 
-from . import context
 from auditors.aws.AWS_CodeArtifact_Auditor import (
     codeartifact_repo_policy_check,
     codeartifact_domain_policy_check,
@@ -295,7 +291,7 @@ def test_domain_no_policy(codeartifact_stubber):
     codeartifact_stubber.assert_no_pending_responses()
 
 
-def test_domain_star_delete(codeartifact_stubber):
+def test_domain_star_star_condition(codeartifact_stubber):
     codeartifact_stubber.add_response("list_domains", list_domains)
     codeartifact_stubber.add_response("get_domain_permissions_policy", get_domain_permissions_policy_star_delete)
     results = codeartifact_domain_policy_check(

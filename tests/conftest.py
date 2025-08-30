@@ -18,7 +18,8 @@ def api_client():
 @pytest.fixture
 def user(db):
     User = get_user_model()
-    return User.objects.create_user(username="tester", email="tester@example.com", password="password")
+    # Use a more secure password for the test user
+    return User.objects.create_user(username="tester", email="tester@example.com", password="testpassword!@#$")
 
 @pytest.fixture
 def authed(api_client, user):

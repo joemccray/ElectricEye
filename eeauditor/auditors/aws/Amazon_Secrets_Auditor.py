@@ -24,6 +24,8 @@ import os
 import json
 import botocore
 import base64
+import subprocess
+import tempfile
 from dateutil.parser import parse
 from check_register import CheckRegister
 
@@ -48,10 +50,6 @@ def get_code_build_projects(cache, session):
 def secret_scan_codebuild_envvar_check(cache: dict, session, awsAccountId: str, awsRegion: str, awsPartition: str) -> dict:
     """[Secrets.CodeBuild.1] CodeBuild Project environment variables should not have secrets stored in Plaintext"""
     iso8601Time = datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat()
-    # setup some reusable variables
-    scanFile = f"{dirPath}/codebuild-data-sample.json"
-    resultsFile = f"{dirPath}/codebuild-scan-result.json"
-    scanCommand = f"detect-secrets scan {scanFile} > {resultsFile}"
     # Submit batch request
     for projects in get_code_build_projects(cache, session):
         # B64 encode all of the details for the Asset
@@ -68,15 +66,14 @@ def secret_scan_codebuild_envvar_check(cache: dict, session, awsAccountId: str, 
                 envvarList.append({"name": str(e["name"]),"value": str(e["value"])})
             else:
                 continue
-        # Write the results out to a file
-        with open(scanFile, 'w') as writejson:
-            json.dump(envvarList, writejson, indent=2, default=str)
-        # execute command
-        os.system(scanCommand)
-        time.sleep(1)
-        # read the results file
-        with open(resultsFile, 'r') as readjson:
-            data = json.load(readjson)
+
+        with tempfile.NamedTemporaryFile(mode='w+', delete=True) as scanFile:
+            json.dump(envvarList, scanFile, indent=2, default=str)
+            scanFile.flush()
+
+            result = subprocess.run(['detect-secrets', 'scan', scanFile.name], capture_output=True, text=True, check=False)
+            data = json.loads(result.stdout)
+
         # if results is an empty dict then there are no secrets found!
         if not data["results"]:
             # this is a passing check
@@ -234,23 +231,12 @@ def secret_scan_codebuild_envvar_check(cache: dict, session, awsAccountId: str, 
                 "RecordState": "ACTIVE"
             }
             yield finding
-        # clear out memory and prevent duplicates from being cached
-        os.system("rm " + scanFile)
-        os.system("rm " + resultsFile)
-        del envvarList
-        del writejson
-        del readjson
-        del data
 
 @registry.register_check("cloudformation")
 def secret_scan_cloudformation_parameters_check(cache: dict, session, awsAccountId: str, awsRegion: str, awsPartition: str) -> dict:
     """[Secrets.CloudFormation.1] CloudFormation Stack parameters should not have secrets stored in Plaintext"""
     cloudformation = session.client("cloudformation")
     iso8601Time = datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat()
-    # setup some reusable variables
-    scanFile = f"{dirPath}/cloudformation-data-sample.json"
-    resultsFile = f"{dirPath}/cloudformation-scan-result.json"
-    scanCommand = f"detect-secrets scan {scanFile} > {resultsFile}"
     # Paginate through all CFN Stacks
     stackList = []
     paginator = cloudformation.get_paginator("list_stacks")
@@ -279,15 +265,14 @@ def secret_scan_cloudformation_parameters_check(cache: dict, session, awsAccount
                         pass
                     else:
                         print(e)
-                # Write the results out to a file
-                with open(scanFile, 'w') as writejson:
-                    json.dump(paramList, writejson, indent=2, default=str)
-                # execute command
-                os.system(scanCommand)
-                time.sleep(1)
-                # read the results file
-                with open(resultsFile, 'r') as readjson:
-                    data = json.load(readjson)
+
+                with tempfile.NamedTemporaryFile(mode='w+', delete=True) as scanFile:
+                    json.dump(paramList, scanFile, indent=2, default=str)
+                    scanFile.flush()
+
+                    result = subprocess.run(['detect-secrets', 'scan', scanFile.name], capture_output=True, text=True, check=False)
+                    data = json.loads(result.stdout)
+
                 # if results is an empty dict then there are no secrets found!
                 if not data["results"]:
                     # this is a passing check
@@ -437,13 +422,6 @@ def secret_scan_cloudformation_parameters_check(cache: dict, session, awsAccount
                         "RecordState": "ACTIVE"
                     }
                     yield finding
-                # clear out memory and prevent duplicates from being cached
-                os.system("rm " + scanFile)
-                os.system("rm " + resultsFile)
-                del paramList
-                del writejson
-                del readjson
-                del data
         except botocore.exceptions.ClientError as error:
             if error.response['Error']['Code'] == 'ValidationError':
                 continue
@@ -456,10 +434,6 @@ def secret_scan_ecs_task_def_envvar_check(cache: dict, session, awsAccountId: st
     """[Secrets.ECS.1] ECS Task Definition environment variables should not have secrets stored in Plaintext"""
     ecs = session.client("ecs")
     iso8601Time = datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat()
-    # setup some reusable variables
-    scanFile = f"{dirPath}/ecs-data-sample.json"
-    resultsFile = f"{dirPath}/ecs-scan-result.json"
-    scanCommand = f"detect-secrets scan {scanFile} > {resultsFile}"
     # Paginate through all Active ECS Task Defs
     taskList = []
     paginator = ecs.get_paginator("list_task_definitions")
@@ -479,15 +453,14 @@ def secret_scan_ecs_task_def_envvar_check(cache: dict, session, awsAccountId: st
             cdefEnvList = []
             for e in c["environment"]:
                 cdefEnvList.append({"name": str(e["name"]),"value": str(e["value"])})
-            # Write the results out to a file
-            with open(scanFile, 'w') as writejson:
-                json.dump(cdefEnvList, writejson, indent=2, default=str)
-            # execute command
-            os.system(scanCommand)
-            time.sleep(1)
-            # read the results file
-            with open(resultsFile, 'r') as readjson:
-                data = json.load(readjson)
+
+            with tempfile.NamedTemporaryFile(mode='w+', delete=True) as scanFile:
+                json.dump(cdefEnvList, scanFile, indent=2, default=str)
+                scanFile.flush()
+
+                result = subprocess.run(['detect-secrets', 'scan', scanFile.name], capture_output=True, text=True, check=False)
+                data = json.loads(result.stdout)
+
             # if results is an empty dict then there are no secrets found!
             if not data["results"]:
                 # this is a passing check
@@ -653,23 +626,12 @@ def secret_scan_ecs_task_def_envvar_check(cache: dict, session, awsAccountId: st
                     "RecordState": "ACTIVE"
                 }
                 yield finding
-            # clear out memory and prevent duplicates from being cached
-            os.system("rm " + scanFile)
-            os.system("rm " + resultsFile)
-            del cdefEnvList
-            del writejson
-            del readjson
-            del data
 
 @registry.register_check("ec2")
 def secret_scan_ec2_userdata_check(cache: dict, session, awsAccountId: str, awsRegion: str, awsPartition: str) -> dict:
     """[Secrets.EC2.1] EC2 User Data should not have secrets stored in Plaintext"""
     ec2 = session.client("ec2")
     iso8601Time = datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat()
-    # setup some reusable variables
-    scanFile = f"{dirPath}/ec2-data-sample.json"
-    resultsFile = f"{dirPath}/ec2-scan-result.json"
-    scanCommand = f"detect-secrets scan {scanFile} > {resultsFile}"
     # Paginate through Running and Stopped EC2 Instances
     paginator = ec2.get_paginator("describe_instances")
     for page in paginator.paginate(Filters=[{'Name': 'instance-state-name','Values': ['running','stopped']}]):
@@ -691,14 +653,14 @@ def secret_scan_ec2_userdata_check(cache: dict, session, awsAccountId: str, awsR
                 except KeyError:
                     continue
                 userdata = base64.b64decode(idata)
-                with open(scanFile, 'w') as writejson:
-                    json.dump({"value": str(userdata)}, writejson, indent=2, default=str)
-                # execute command
-                os.system(scanCommand)
-                time.sleep(1)
-                # read the results file
-                with open(resultsFile, 'r') as readjson:
-                    data = json.load(readjson)
+
+                with tempfile.NamedTemporaryFile(mode='w+', delete=True) as scanFile:
+                    json.dump({"value": str(userdata)}, scanFile, indent=2, default=str)
+                    scanFile.flush()
+
+                    result = subprocess.run(['detect-secrets', 'scan', scanFile.name], capture_output=True, text=True, check=False)
+                    data = json.loads(result.stdout)
+
                 # if results is an empty dict then there are no secrets found!
                 if not data["results"]:
                     # this is a passing check
@@ -858,13 +820,6 @@ def secret_scan_ec2_userdata_check(cache: dict, session, awsAccountId: str, awsR
                         "RecordState": "ACTIVE"
                     }
                     yield finding
-                # clear out memory and prevent duplicates from being cached
-                os.system("rm " + scanFile)
-                os.system("rm " + resultsFile)
-                del userdata
-                del writejson
-                del readjson
-                del data
 
 '''
 @registry.register_check("lambda")

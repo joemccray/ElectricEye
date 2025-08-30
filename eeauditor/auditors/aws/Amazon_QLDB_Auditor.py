@@ -37,7 +37,7 @@ def qldb_deletion_protection_check(cache: dict, session, awsAccountId: str, awsR
         try:
             response = qldb.list_ledgers(NextToken=response["NextToken"])
             ledgersList.append(response)
-        except:
+        except Exception:
             break
     iso8601Time = datetime.datetime.now(datetime.timezone.utc).isoformat()
     for ledgers in ledgersList:
@@ -216,7 +216,7 @@ def qldb_export_export_encryption_check(cache: dict, session, awsAccountId: str,
         try:
             response = qldb.list_journal_s3_exports(NextToken=response["NextToken"])
             exportList.append(response)
-        except:
+        except Exception:
             break
     iso8601Time = datetime.datetime.now(datetime.timezone.utc).isoformat()
     for exports in exportList:

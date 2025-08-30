@@ -1,7 +1,4 @@
 from azure.mgmt.web  import WebSiteManagementClient, models
-import datetime
-import base64
-import json
 from check_register import CheckRegister
 
 registry = CheckRegister()

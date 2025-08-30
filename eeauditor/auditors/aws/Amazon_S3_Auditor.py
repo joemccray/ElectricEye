@@ -673,7 +673,7 @@ def aws_s3_bucket_policy_allows_public_access_check(cache: dict, session, awsAcc
                 "Severity": {"Label": "INFORMATIONAL"},
                 "Confidence": 99,
                 "Title": "[S3.4] Amazon S3 Bucket Policies should not allow public access to the bucket",
-                "Description": f"Amazon S3 bucket "
+                "Description": "Amazon S3 bucket "
                 + bucketName
                 + " has a bucket policy attached and it does not allow public access.",
                 "Remediation": {

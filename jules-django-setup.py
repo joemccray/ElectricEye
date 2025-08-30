@@ -17,17 +17,23 @@ Usage:
 """
 
 from __future__ import annotations
-import os, sys, re, json, stat, time
+import sys
+import re
+import json
+import stat
 from pathlib import Path
 
-BOLD = "\033[1m"; RESET = "\033[0m"
+BOLD = "\033[1m"
+RESET = "\033[0m"
 
 def info(msg: str) -> None:
     print(f"{BOLD}[jules-setup]{RESET} {msg}")
 
 def rel(p: Path, root: Path) -> Path:
-    try: return p.relative_to(root)
-    except Exception: return p
+    try:
+        return p.relative_to(root)
+    except Exception:
+        return p
 
 def write(path: Path, content: str, executable: bool = False, root: Path | None = None) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -36,7 +42,8 @@ def write(path: Path, content: str, executable: bool = False, root: Path | None 
     if executable:
         mode = path.stat().st_mode
         path.chmod(mode | stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH)
-    if root: print("  - wrote", rel(path, root))
+    if root:
+        print("  - wrote", rel(path, root))
 
 def append_once(path: Path, lines: list[str], root: Path | None = None) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -48,7 +55,8 @@ def append_once(path: Path, lines: list[str], root: Path | None = None) -> None:
             changed = True
     if changed:
         path.write_text(existing, encoding="utf-8")
-        if root: print("  - updated", rel(path, root))
+        if root:
+            print("  - updated", rel(path, root))
 
 # ---------- Requirements ----------
 
@@ -88,7 +96,8 @@ def detect_settings(root: Path) -> Path | None:
     for p in [root / "config" / "settings" / "base.py",
               root / "config" / "settings.py",
               root / "settings.py"]:
-        if p.exists(): return p
+        if p.exists():
+            return p
     return None
 
 def enforce_settings(settings_path: Path, root: Path) -> None:
@@ -110,11 +119,16 @@ def enforce_settings(settings_path: Path, root: Path) -> None:
         s = re.sub(r'("django.middleware.security.SecurityMiddleware",\s*)',
                    r'\1\n    "whitenoise.middleware.WhiteNoiseMiddleware",\n',
                    s, count=1)
-    if "STATIC_URL" not in s: s += "\nSTATIC_URL = '/static/'\n"
-    if "from pathlib import Path" not in s: s = "from pathlib import Path\n" + s
-    if "BASE_DIR" not in s: s = "from pathlib import Path\nBASE_DIR = Path(__file__).resolve().parents[1]\n" + s
-    if "STATIC_ROOT" not in s: s += "STATIC_ROOT = BASE_DIR / 'staticfiles'\n"
-    if "STORAGES" not in s: s += "STORAGES = { 'staticfiles': { 'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage' } }\n"
+    if "STATIC_URL" not in s:
+        s += "\nSTATIC_URL = '/static/'\n"
+    if "from pathlib import Path" not in s:
+        s = "from pathlib import Path\n" + s
+    if "BASE_DIR" not in s:
+        s = "from pathlib import Path\nBASE_DIR = Path(__file__).resolve().parents[1]\n" + s
+    if "STATIC_ROOT" not in s:
+        s += "STATIC_ROOT = BASE_DIR / 'staticfiles'\n"
+    if "STORAGES" not in s:
+        s += "STORAGES = { 'staticfiles': { 'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage' } }\n"
     if "INSTALLED_APPS" in s and "'jobs'" not in s:
         s = re.sub(r"(INSTALLED_APPS\s*=\s*\[)", r"\1\n    'jobs',", s, count=1, flags=re.M)
     if "CELERY_TASK_ALWAYS_EAGER" not in s:
@@ -410,11 +424,14 @@ echo "[jules] preflight OK"
         """#!/usr/bin/env python3
 from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
-DOCS = ROOT/'docs'; DOCS.mkdir(parents=True, exist_ok=True)
+DOCS = ROOT/'docs'
+DOCS.mkdir(parents=True, exist_ok=True)
 defaults = {"Agentic-Django-Plan.md": "# Plan (placeholder)\\n", "AGENTS.md": "# Agents (placeholder)\\n"}
 for name, content in defaults.items():
     p = DOCS/name
-    if not p.exists(): p.write_text(content, encoding="utf-8"); print("[restore_docs] created", p)
+    if not p.exists():
+        p.write_text(content, encoding="utf-8")
+        print("[restore_docs] created", p)
 print("[restore_docs] ok")
 """,
         root=root,
@@ -428,54 +445,75 @@ ROOT = Path(__file__).resolve().parents[1]
 def sha256(p: Path) -> str:
     h = hashlib.sha256()
     with p.open("rb") as f:
-        for chunk in iter(lambda: f.read(8192), b""): h.update(chunk)
+        for chunk in iter(lambda: f.read(8192), b""):
+            h.update(chunk)
     return h.hexdigest()
 def load_manifest() -> dict:
     p = ROOT/'docs'/'manifest.yaml'
-    if not p.exists(): return {"required": [{"path":"README.md"}]}
+    if not p.exists():
+        return {"required": [{"path":"README.md"}]}
     txt = p.read_text()
     data = {"required": []}
     for line in txt.splitlines():
         line=line.strip()
-        if line.startswith("- "): data["required"].append({"path": line[2:].strip()})
-        elif line.startswith("path:"): data["required"].append({"path": line.split(":",1)[1].strip()})
+        if line.startswith("- "):
+            data["required"].append({"path": line[2:].strip()})
+        elif line.startswith("path:"):
+            data["required"].append({"path": line.split(":",1)[1].strip()})
     if not data["required"]:
         data = json.loads(txt)
     return data
 def check(m: dict)->int:
-    missing=[]; mismatches=[]
+    missing=[]
+    mismatches=[]
     for it in m.get("required", []):
         p=ROOT/it["path"]
-        if not p.exists(): missing.append(it["path"]); continue
+        if not p.exists():
+            missing.append(it["path"])
+            continue
         if "sha256" in it and sha256(p)!=it["sha256"]:
             mismatches.append((it["path"], it["sha256"], sha256(p)))
     if missing or mismatches:
-        if missing: print("Missing:"); [print(" -",x) for x in missing]
+        if missing:
+            print("Missing:")
+            [print(" -",x) for x in missing]
         if mismatches:
             print("Checksum mismatches:")
-            for path,exp,got in mismatches: print(f" - {path}\\n   expected:{exp}\\n   got:{got}")
+            for path,exp,got in mismatches:
+                print(f" - {path}\\n   expected:{exp}\\n   got:{got}")
         return 1
-    print("Manifest OK"); return 0
+    print("Manifest OK")
+    return 0
 def update(m: dict)->int:
     changed=False
     for it in m.get("required", []):
         p=ROOT/it["path"]
-        if not p.exists(): continue
+        if not p.exists():
+            continue
         s=sha256(p)
-        if it.get("sha256")!=s: it["sha256"]=s; changed=True
+        if it.get("sha256")!=s:
+            it["sha256"]=s
+            changed=True
     if changed:
         out=ROOT/'docs'/'manifest.yaml'
         with out.open("w", encoding="utf-8") as f:
             f.write("required:\\n")
             for x in m["required"]:
-                if "sha256" in x: f.write(f"  - path: {x['path']}\\n    sha256: {x['sha256']}\\n")
-                else: f.write(f"  - {x['path']}\\n")
-        print("Updated manifest."); return 0
-    print("No updates needed."); return 0
+                if "sha256" in x:
+                    f.write(f"  - path: {x['path']}\\n    sha256: {x['sha256']}\\n")
+                else:
+                    f.write(f"  - {x['path']}\\n")
+        print("Updated manifest.")
+        return 0
+    print("No updates needed.")
+    return 0
 if __name__=="__main__":
-    import argparse; ap=argparse.ArgumentParser()
-    ap.add_argument("--check", action="store_true"); ap.add_argument("--update", action="store_true")
-    a=ap.parse_args(); m=load_manifest()
+    import argparse
+    ap=argparse.ArgumentParser()
+    ap.add_argument("--check", action="store_true")
+    ap.add_argument("--update", action="store_true")
+    a=ap.parse_args()
+    m=load_manifest()
     sys.exit(update(m) if a.update else check(m))
 """,
         root=root,
@@ -502,23 +540,32 @@ from pathlib import Path
 from urllib.request import urlopen
 ROOT = Path(__file__).resolve().parents[1]
 REG = ROOT/'docs'/'reference-sources.json'
-OUT = ROOT/'docs'/'reference'; OUT.mkdir(parents=True, exist_ok=True)
+OUT = ROOT/'docs'/'reference'
+OUT.mkdir(parents=True, exist_ok=True)
 STATE = ROOT/'docs'/'reference-sources.state.json'
 def fetch(url):
-    with urlopen(url, timeout=20) as r: return r.read()
+    with urlopen(url, timeout=20) as r:
+        return r.read()
 def main():
     reg=json.loads(REG.read_text(encoding='utf-8'))
     state={"ts": int(time.time()), "entries": []}
     for s in reg["sources"]:
-        url=s["url"]; dest=OUT/url.split("/")[-1]
+        url=s["url"]
+        dest=OUT/url.split("/")[-1]
         try:
-            b=fetch(url); dest.write_bytes(b); print("[sync]", s["name"], "->", dest.name, f"({len(b)} bytes)")
+            b=fetch(url)
+            dest.write_bytes(b)
+            print("[sync]", s["name"], "->", dest.name, f"({len(b)} bytes)")
             state["entries"].append({"name": s["name"], "url": url, "file": dest.name})
         except Exception as e:
-            if dest.exists(): print("[sync]", s["name"], "failed; kept cached", dest.name)
-            else: raise
-    STATE.write_text(json.dumps(state, indent=2), encoding="utf-8"); print("[sync] done")
-if __name__=="__main__": main()
+            if dest.exists():
+                print("[sync]", s["name"], "failed; kept cached", dest.name)
+            else:
+                raise
+    STATE.write_text(json.dumps(state, indent=2), encoding="utf-8")
+    print("[sync] done")
+if __name__=="__main__":
+    main()
 """,
         root=root,
     )
@@ -544,7 +591,8 @@ import sys, time
 from pathlib import Path
 title = " ".join(sys.argv[1:]).strip() or "Untitled Decision"
 slug = title.lower().replace(" ", "-")
-adr_dir = Path("docs/adr"); adr_dir.mkdir(parents=True, exist_ok=True)
+adr_dir = Path("docs/adr")
+adr_dir.mkdir(parents=True, exist_ok=True)
 idx = max([0] + [int(p.name.split("-")[0]) for p in adr_dir.glob("[0-9][0-9][0-9][0-9]-*.md")]) + 1
 p = adr_dir / f"{idx:04d}-{slug}.md"
 p.write_text(f"# ADR {idx}: {title}\\nDate: {time.strftime('%Y-%m-%d')}\\n\\n## Status\\nProposed\\n\\n## Context\\n\\n## Decision\\n\\n## Consequences\\n\\n## References\\n", encoding="utf-8")
@@ -575,21 +623,30 @@ CLERK_AUDIENCE  = os.getenv("CLERK_AUDIENCE", "")
 CLERK_ISSUER    = os.getenv("CLERK_ISSUER", "")
 _JWKS_CACHE = {"ts": 0, "jwks": None}
 def _get_jwks():
-    if _JWKS_CACHE["jwks"] and (time.time() - _JWKS_CACHE["ts"] < 3600): return _JWKS_CACHE["jwks"]
+    if _JWKS_CACHE["jwks"] and (time.time() - _JWKS_CACHE["ts"] < 3600):
+        return _JWKS_CACHE["jwks"]
     with urlopen(CLERK_JWKS_URL, timeout=10) as r:
         import json as _json
-        _JWKS_CACHE["jwks"] = _json.loads(r.read()); _JWKS_CACHE["ts"] = time.time()
+        _JWKS_CACHE["jwks"] = _json.loads(r.read())
+        _JWKS_CACHE["ts"] = time.time()
     return _JWKS_CACHE["jwks"]
 def _verify_jwt(token: str) -> dict:
-    headers = jwt.get_unverified_header(token); kid = headers.get("kid")
-    jwks = _get_jwks(); key = next((k for k in jwks.get("keys",[]) if k.get("kid")==kid), None)
-    if not key: raise exceptions.AuthenticationFailed("JWKS kid not found")
+    headers = jwt.get_unverified_header(token)
+    kid = headers.get("kid")
+    jwks = _get_jwks()
+    key = next((k for k in jwks.get("keys",[]) if k.get("kid")==kid), None)
+    if not key:
+        raise exceptions.AuthenticationFailed("JWKS kid not found")
     public_key = jwk.construct(key)
-    message, encoded_sig = token.rsplit(".", 1); decoded_sig = base64url_decode(encoded_sig.encode())
-    if not public_key.verify(message.encode(), decoded_sig): raise exceptions.AuthenticationFailed("Invalid signature")
+    message, encoded_sig = token.rsplit(".", 1)
+    decoded_sig = base64url_decode(encoded_sig.encode())
+    if not public_key.verify(message.encode(), decoded_sig):
+        raise exceptions.AuthenticationFailed("Invalid signature")
     claims = jwt.get_unverified_claims(token)
-    if CLERK_AUDIENCE and claims.get("aud") not in [CLERK_AUDIENCE] + str(CLERK_AUDIENCE).split(","): raise exceptions.AuthenticationFailed("Invalid audience")
-    if CLERK_ISSUER and claims.get("iss") != CLERK_ISSUER: raise exceptions.AuthenticationFailed("Invalid issuer")
+    if CLERK_AUDIENCE and claims.get("aud") not in [CLERK_AUDIENCE] + str(CLERK_AUDIENCE).split(","):
+        raise exceptions.AuthenticationFailed("Invalid audience")
+    if CLERK_ISSUER and claims.get("iss") != CLERK_ISSUER:
+        raise exceptions.AuthenticationFailed("Invalid issuer")
     return claims
 class ClerkJWTAuthentication(BaseAuthentication):
     keyword = "Bearer"
@@ -597,12 +654,16 @@ class ClerkJWTAuthentication(BaseAuthentication):
         if os.getenv("DJANGO_ENV") == "test" or os.getenv("USE_CLERK_AUTH") == "0":
             return None  # fall back to Session/Basic in REST_FRAMEWORK during tests
         auth = request.headers.get("Authorization", "")
-        if not auth.startswith("Bearer "): return None
+        if not auth.startswith("Bearer "):
+            return None
         token = auth[len("Bearer "):].strip()
-        if not token: raise exceptions.AuthenticationFailed("Missing token")
+        if not token:
+            raise exceptions.AuthenticationFailed("Missing token")
         claims = _verify_jwt(token)
         from django.contrib.auth.models import AnonymousUser
-        user = AnonymousUser(); user.id = claims.get("sub"); user.email = claims.get("email")
+        user = AnonymousUser()
+        user.id = claims.get("sub")
+        user.email = claims.get("email")
         return (user, None)
 """,
         root=root,
@@ -744,7 +805,8 @@ from .models import GreetingJob
 @shared_task
 def process_greeting_job(job_id: int) -> None:
     job = GreetingJob.objects.get(id=job_id)
-    job.status = "processing"; job.save(update_fields=["status"])
+    job.status = "processing"
+    job.save(update_fields=["status"])
     # simulate work; in real app integrate services and set real URL
     job.result_url = "https://example.com/out.mp4"
     job.status = "done"
@@ -876,7 +938,8 @@ import sys, pathlib, re
 bad = re.compile(r"manage\\.py\\s+(flush|reset_db|sqlflush)\\b")
 for p in pathlib.Path('.').rglob('*.sh'):
     if bad.search(p.read_text(encoding='utf-8')):
-        print("Destructive command found in:", p); sys.exit(1)
+        print("Destructive command found in:", p)
+        sys.exit(1)
 print("No destructive commands detected.")
 """,
         executable=True, root=root,

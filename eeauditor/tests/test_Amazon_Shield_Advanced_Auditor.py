@@ -18,13 +18,10 @@
 #specific language governing permissions and limitations
 #under the License.
 import datetime
-import os
 import pytest
-import sys
 
-from botocore.stub import Stubber, ANY
+from botocore.stub import Stubber
 
-from . import context
 from auditors.aws.Amazon_Shield_Advanced_Auditor import (
     shield_advanced_subscription_latest_attacks,
     shield

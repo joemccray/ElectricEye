@@ -18,14 +18,10 @@
 #specific language governing permissions and limitations
 #under the License.
 import datetime
-import json
-import os
 import pytest
 
-from botocore.stub import Stubber, ANY
+from botocore.stub import Stubber
 
-from . import context
-from . import context
 from auditors.aws.Amazon_EC2_Auditor import (
     ec2_ami_age_check,
     ec2_ami_status_check,

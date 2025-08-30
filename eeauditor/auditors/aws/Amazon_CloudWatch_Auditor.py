@@ -20,7 +20,6 @@
 
 from check_register import CheckRegister
 import datetime
-from botocore.exceptions import ClientError
 import base64
 import json
 

@@ -1314,7 +1314,7 @@ def cloudtrail_s3_read_and_write_data_events_check(cache: dict, session, awsAcco
         # Get Event Selectors, if there are not any filters for Management Events or Data Events at all, this will fail
         try:
             dataEvents = cloudtrail.get_event_selectors(TrailName=trail["TrailARN"])
-            if not "AdvancedEventSelectors" in dataEvents:
+            if "AdvancedEventSelectors" not in dataEvents:
                 allS3DataEvents = False
             else:
             # Check if there is a combination of eventCategory and resources.Type matching the desired values

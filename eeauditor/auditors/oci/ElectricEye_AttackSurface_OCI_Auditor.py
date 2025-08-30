@@ -177,7 +177,7 @@ def oci_compute_attack_surface_open_tcp_port_check(cache, awsAccountId, awsRegio
         # Submit details to the scanner function
         scanner = scan_host(pubIp, instanceName, "OCI Cloud Compute instance")
         # NoneType returned on KeyError due to Nmap errors
-        if scanner == None:
+        if scanner is None:
             continue
         else:
             # Loop the results of the scan - starting with Open Ports which require a combination of
@@ -396,7 +396,7 @@ def oci_load_balancer_attack_surface_open_tcp_port_check(cache, awsAccountId, aw
         # Submit details to the scanner function
         scanner = scan_host(pubIp, loadBalancerName, "OCI Load Balancer")
         # NoneType returned on KeyError due to Nmap errors
-        if scanner == None:
+        if scanner is None:
             continue
         else:
             # Loop the results of the scan - starting with Open Ports which require a combination of

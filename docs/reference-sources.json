@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "sources": [
+    {
+      "name": "Django-Business-Logic",
+      "url": "http://146.190.150.94/app-reference-docs/Django-Business-Logic.md"
+    },
+    {
+      "name": "Django-clerk",
+      "url": "http://146.190.150.94/app-reference-docs/Django-clerk.md"
+    },
+    {
+      "name": "Django-Data-Flow",
+      "url": "http://146.190.150.94/app-reference-docs/Django-Data-Flow.md"
+    },
+    {
+      "name": "Django-REST-Framework-Cheat-Sheet",
+      "url": "http://146.190.150.94/app-reference-docs/Django-REST-Framework-Cheat-Sheet.md"
+    },
+    {
+      "name": "Django-CrewAI",
+      "url": "http://146.190.150.94/app-reference-docs/Django-CrewAI.v2.md"
+    },
+    {
+      "name": "Django-SaaS",
+      "url": "http://146.190.150.94/app-reference-docs/Django-SaaS.md"
+    },
+    {
+      "name": "Django-Freshdesk",
+      "url": "http://146.190.150.94/app-reference-docs/Django-Freshdesk.md"
+    },
+    {
+      "name": "Railway-Native-Django-Deployment-Tips",
+      "url": "http://146.190.150.94/app-reference-docs/Railway-Native-Django-Deployment-Tips.md"
+    },
+    {
+      "name": "Code-Review-Template",
+      "url": "http://146.190.150.94/app-reference-docs/Code-Review-Template.md"
+    }
+  ]
+}

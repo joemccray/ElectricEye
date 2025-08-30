@@ -25,8 +25,8 @@ from inspect import getfile
 from time import sleep
 import json
 from requests import get
-from check_register import CheckRegister
-from cloud_utils import CloudConfig
+from .check_register import CheckRegister
+from .cloud_utils import CloudConfig
 from pluginbase import PluginBase
 
 logging.basicConfig(level=logging.INFO)

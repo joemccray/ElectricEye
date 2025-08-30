@@ -17,23 +17,17 @@
 #KIND, either express or implied.  See the License for the
 #specific language governing permissions and limitations
 #under the License.
-import datetime
-import os
 import pytest
-import sys
-import botocore
 
-from botocore.stub import Stubber, ANY
+from botocore.stub import Stubber
 
-from . import context
 from auditors.aws.Amazon_EFS_Auditor import (
     efs_filesys_encryption_check,
-    describe_file_systems,
     efs_filesys_policy_check,
     efs
 )
 
-describe_file_systems = {
+describe_file_systems_response = {
     "FileSystems": [{
         "FileSystemId": "MyEFS",
         "OwnerId": "Owner12345",
@@ -94,7 +88,7 @@ def efs_stubber():
 
 
 def test_efs_encryption_true(efs_stubber):
-    efs_stubber.add_response("describe_file_systems", describe_file_systems)
+    efs_stubber.add_response("describe_file_systems", describe_file_systems_response)
     results = efs_filesys_encryption_check(
         cache={}, awsAccountId="012345678901", awsRegion="us-east-1", awsPartition="aws"
     )
@@ -121,7 +115,7 @@ def test_efs_encryption_false(efs_stubber):
 
 
 def test_efs_policy(efs_stubber):
-    efs_stubber.add_response("describe_file_systems", describe_file_systems)
+    efs_stubber.add_response("describe_file_systems", describe_file_systems_response)
     efs_stubber.add_response("describe_file_system_policy", file_system_policy)
     results = efs_filesys_policy_check(
         cache={}, awsAccountId="012345678901", awsRegion="us-east-1", awsPartition="aws"
@@ -135,7 +129,7 @@ def test_efs_policy(efs_stubber):
 
 
 def test_efs_no_policy(efs_stubber):
-    efs_stubber.add_response("describe_file_systems", describe_file_systems)
+    efs_stubber.add_response("describe_file_systems", describe_file_systems_response)
     efs_stubber.add_client_error("describe_file_system_policy", 'FileSystemNotFound')
     results = efs_filesys_policy_check(
         cache={}, awsAccountId="012345678901", awsRegion="us-east-1", awsPartition="aws"

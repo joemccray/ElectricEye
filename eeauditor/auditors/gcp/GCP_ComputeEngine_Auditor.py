@@ -1464,7 +1464,7 @@ def gce_instance_serial_port_access_check(cache: dict, awsAccountId: str, awsReg
         else:
             serialPortAccess = False
         # this is a failing check
-        if serialPortAccess == True:
+        if serialPortAccess:
             finding = {
                 "SchemaVersion": "2018-10-08",
                 "Id": f"{gcpProjectId}/{zone}/{id}/gce-instance-serial-port-access-check",
@@ -1624,7 +1624,7 @@ def gce_instance_oslogon_access_check(cache: dict, awsAccountId: str, awsRegion:
     for gce in get_compute_engine_instances(cache, gcpProjectId, gcpCredentials):
         # B64 encode all of the details for the Asset
         assetJson = json.dumps(gce,default=str).encode("utf-8")
-        assetB64 = base64.b64encode(assetJson)
+        base64.b64encode(assetJson)
         id = gce["id"]
         name = gce["name"]
         description = gce["description"]
@@ -1649,7 +1649,7 @@ def gce_instance_oslogon_access_check(cache: dict, awsAccountId: str, awsRegion:
                 osLogonEnabled = False
 
             # this is a failing check
-            if osLogonEnabled == False:
+            if not osLogonEnabled:
                 finding = {
                     "SchemaVersion": "2018-10-08",
                     "Id": f"{gcpProjectId}/{zone}/{id}/gce-instance-linux-oslogon-access-check",
@@ -1795,7 +1795,7 @@ def gce_instance_oslogon_2fa_access_check(cache: dict, awsAccountId: str, awsReg
     for gce in get_compute_engine_instances(cache, gcpProjectId, gcpCredentials):
         # B64 encode all of the details for the Asset
         assetJson = json.dumps(gce,default=str).encode("utf-8")
-        assetB64 = base64.b64encode(assetJson)
+        base64.b64encode(assetJson)
         id = gce["id"]
         name = gce["name"]
         description = gce["description"]
@@ -1818,7 +1818,7 @@ def gce_instance_oslogon_2fa_access_check(cache: dict, awsAccountId: str, awsReg
                     osLogonEnabled = False
             except KeyError:
                 osLogonEnabled = False
-            if osLogonEnabled == False:
+            if not osLogonEnabled:
                 continue
             # Check if OS Logon 2FA is available for the Instance
             try:
@@ -1833,7 +1833,7 @@ def gce_instance_oslogon_2fa_access_check(cache: dict, awsAccountId: str, awsReg
                 osLogon2faEnabled = False
 
             # this is a failing check
-            if osLogon2faEnabled == False:
+            if not osLogon2faEnabled:
                 finding = {
                     "SchemaVersion": "2018-10-08",
                     "Id": f"{gcpProjectId}/{zone}/{id}/gce-instance-linux-oslogon-2fa-access-check",
@@ -2023,7 +2023,7 @@ def gce_instance_block_proj_ssh_keys_check(cache: dict, awsAccountId: str, awsRe
             projWideSshBlock = False
 
         # this is a failing check
-        if projWideSshBlock == False:
+        if not projWideSshBlock:
             finding = {
                 "SchemaVersion": "2018-10-08",
                 "Id": f"{gcpProjectId}/{zone}/{id}/gce-instance-proj-wide-ssh-access-check",

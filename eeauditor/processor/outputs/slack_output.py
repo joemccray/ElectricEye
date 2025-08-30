@@ -132,7 +132,7 @@ class SlackProvider(object):
                     backoff = int(retry) + 0.25
                     sleep(backoff)
             
-            print(f"Finished sending Findings to Slack!")
+            print("Finished sending Findings to Slack!")
 
         elif self.messageType == "Summary":
             summaryBlock = self.create_summary_blocks_payload(findings)
@@ -147,9 +147,9 @@ class SlackProvider(object):
             # Send request and backoff if throttled
             r = requests.post('https://slack.com/api/chat.postMessage', slackPayload)
 
-            print(f"Finished sending Summary to Slack!")
+            print("Finished sending Summary to Slack!")
         else:
-            print(f"Unsupported value for [outputs.slack][electric_eye_slack_message_type]")
+            print("Unsupported value for [outputs.slack][electric_eye_slack_message_type]")
             sys.exit(2)
 
     def get_credential_from_aws_ssm(self, value, configurationName):

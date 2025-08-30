@@ -304,7 +304,7 @@ def oci_file_storage_file_system_export_options_privileged_source_ports_check(ca
         if filesys["exports"]:
             for export in filesys["exports"]:
                 if export["export_options"]:
-                    insecureExportOptionConfigured = any(d.get("require_privileged_source_port") == False for d in export["export_options"])
+                    insecureExportOptionConfigured = any(not d.get("require_privileged_source_port") for d in export["export_options"])
                 else:
                     insecureExportOptionConfigured = True
         else:

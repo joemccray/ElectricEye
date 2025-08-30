@@ -18,13 +18,11 @@
 #specific language governing permissions and limitations
 #under the License.
 import datetime
-import os
 import pytest
 import sys
 
 from botocore.stub import Stubber, ANY
 
-from . import context
 from auditors.aws.AWS_Lambda_Auditor import (
     unused_function_check,
     lambda_client,

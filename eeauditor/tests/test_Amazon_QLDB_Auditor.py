@@ -17,14 +17,10 @@
 #KIND, either express or implied.  See the License for the
 #specific language governing permissions and limitations
 #under the License.
-import datetime
-import os
 import pytest
-import sys
 
-from botocore.stub import Stubber, ANY
+from botocore.stub import Stubber
 
-from . import context
 from auditors.aws.Amazon_QLDB_Auditor import qldb_deletion_protection_check, qldb
 
 list_ledgers_response = {

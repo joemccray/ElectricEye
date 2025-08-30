@@ -76,7 +76,7 @@ def servicenow_sspm_certificate_trust_check(cache: dict, awsAccountId: str, awsR
     # as a failed finding with a lot less fan fair
     propFinder = next((sysprop for sysprop in sysPropCache if sysprop["name"] == evalTarget), False)
     # If we cannot find the property set "NOT_CONFIGURED" which will fail whatever the value should be
-    if propFinder == False:
+    if not propFinder:
         propertyValue = "NOT_CONFIGURED"
         propDescription = ""
         propId = ""
@@ -268,7 +268,7 @@ def servicenow_sspm_disable_ssl_check(cache: dict, awsAccountId: str, awsRegion:
     # as a failed finding with a lot less fan fair
     propFinder = next((sysprop for sysprop in sysPropCache if sysprop["name"] == evalTarget), False)
     # If we cannot find the property set "NOT_CONFIGURED" which will fail whatever the value should be
-    if propFinder == False:
+    if not propFinder:
         propertyValue = "NOT_CONFIGURED"
         propDescription = ""
         propId = ""
@@ -460,7 +460,7 @@ def servicenow_sspm_http_client_hostname_verification_check(cache: dict, awsAcco
     # as a failed finding with a lot less fan fair
     propFinder = next((sysprop for sysprop in sysPropCache if sysprop["name"] == evalTarget), False)
     # If we cannot find the property set "NOT_CONFIGURED" which will fail whatever the value should be
-    if propFinder == False:
+    if not propFinder:
         propertyValue = "NOT_CONFIGURED"
         propDescription = ""
         propId = ""
@@ -652,7 +652,7 @@ def servicenow_sspm_revoked_certificate_revocation_check(cache: dict, awsAccount
     # as a failed finding with a lot less fan fair
     propFinder = next((sysprop for sysprop in sysPropCache if sysprop["name"] == evalTarget), False)
     # If we cannot find the property set "NOT_CONFIGURED" which will fail whatever the value should be
-    if propFinder == False:
+    if not propFinder:
         propertyValue = "NOT_CONFIGURED"
         propDescription = ""
         propId = ""

@@ -76,7 +76,7 @@ class HtmlProvider(object):
             # Attempt to get the IMG tag of a service
             assetService = row["AssetService"]
             serviceImg = self.get_image_tag(assetService)
-            if serviceImg == None:
+            if serviceImg is None:
                 assetServiceTd = f"<td>{assetService}</td>"
             else:
                 assetServiceTd = f'<td>{serviceImg} \n {assetService}</td>'
@@ -392,7 +392,7 @@ class HtmlProvider(object):
                     <tbody>
         '''
         # After this section, multiple table rows need to be added, before it's closed out
-        tableClosure = f'''
+        tableClosure = '''
                     </tbody>
                 </table>
             </section>

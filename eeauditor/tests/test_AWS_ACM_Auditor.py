@@ -18,13 +18,10 @@
 #specific language governing permissions and limitations
 #under the License.
 import datetime
-import json
-import os
 import pytest
 
-from botocore.stub import Stubber, ANY
+from botocore.stub import Stubber
 
-from . import context
 from auditors.aws.AWS_ACM_Auditor import (
     certificate_status_check,
     certificate_renewal_status_check,
@@ -153,7 +150,7 @@ def test_acm_renewal_status_pending_validation_check(acm_stubber):
     acm_stubber.assert_no_pending_responses()
 
 
-def test_acm_renewal_status_failed_check(acm_stubber):
+def test_acm_cert_status_failed_check(acm_stubber):
     acm_stubber.add_response("list_certificates", list_certificates_response)
     acm_stubber.add_response("describe_certificate", describe_failed_cert_response)
     results = certificate_renewal_status_check(

@@ -107,7 +107,7 @@ def bigquery_table_updated_within_90_days_check(cache: dict, awsAccountId, awsRe
                     "AssetDetails": assetB64,
                     "AssetClass": "Analytics",
                     "AssetService": "Google Cloud BigQuery",
-                    "AssetComponent": f"Table"
+                    "AssetComponent": "Table"
                 },
                 "Resources": [
                     {
@@ -251,7 +251,7 @@ def bigquery_table_custom_cmek_check(cache: dict, awsAccountId, awsRegion, awsPa
                     "AssetDetails": assetB64,
                     "AssetClass": "Analytics",
                     "AssetService": "Google Cloud BigQuery",
-                    "AssetComponent": f"Table"
+                    "AssetComponent": "Table"
                 },
                 "Resources": [
                     {
@@ -314,7 +314,7 @@ def bigquery_table_custom_cmek_check(cache: dict, awsAccountId, awsRegion, awsPa
                     "AssetDetails": assetB64,
                     "AssetClass": "Analytics",
                     "AssetService": "Google Cloud BigQuery",
-                    "AssetComponent": f"Table"
+                    "AssetComponent": "Table"
                 },
                 "Resources": [
                     {

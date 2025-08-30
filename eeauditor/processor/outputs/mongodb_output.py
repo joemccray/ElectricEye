@@ -79,7 +79,7 @@ class MongodbProvider(object):
         mongodbCollectionName = mongodbDetails["mongodb_collection_name"]
 
         # Determine if a password if provided, and if so, retrieve it based on `credentials_location`
-        if mongodbDetails["mongodb_password_in_use"] == True:
+        if mongodbDetails["mongodb_password_in_use"]:
             self.usePassword = True
             # Parse Password
             if self.credentials_location == "CONFIG_FILE":
@@ -101,11 +101,11 @@ class MongodbProvider(object):
             mongodbUsername = "none"
 
         # Determine if a TLS package for AWS DocumentDB needs to be downloaded
-        if mongodbDetails["mongodb_aws_documentdb_tls_enabled"] == True:
+        if mongodbDetails["mongodb_aws_documentdb_tls_enabled"]:
             self.useTls = True
             # Download the latest AWS Mongo TLS cert bundle
             r = requests.get("https://truststore.pki.rds.amazonaws.com/global/global-bundle.pem")
-            print(f"Downloaded CA bundle")
+            print("Downloaded CA bundle")
             # Write it to where the output is happening
             with open("./global-bundle.pem", "wb") as f:
                 f.write(r.content)
@@ -141,16 +141,16 @@ class MongodbProvider(object):
         # There are different possible connection objects based on if Passwords are used and if TLS is enabled for AWS DocDB
 
         # Self-hosted, no password
-        if (self.usePassword and self.usingAwsDocDb) == False:
+        if not (self.usePassword and self.usingAwsDocDb):
             connectionString = f"mongodb://{self.endpoint}:{self.port}"
         # Self-hosted, with password
-        if self.usePassword == True and self.usingAwsDocDb == False:
+        if self.usePassword and not self.usingAwsDocDb:
             connectionString = f"mongodb://{self.username}:{self.password}@{self.endpoint}:{self.port}"
         # AWS DocumentDB, TLS-Disabled
-        if self.usingAwsDocDb == True and self.useTls == False:
+        if self.usingAwsDocDb and not self.useTls:
             connectionString = f"mongodb://{self.username}:{self.password}@{self.endpoint}:{self.port}/?replicaSet=rs0&readPreference=secondaryPreferred&retryWrites=false"
         # AWS DocumentDB, TLS-Enabled
-        if (self.usingAwsDocDb and self.useTls) == True:
+        if (self.usingAwsDocDb and self.useTls):
             connectionString = f"mongodb://{self.username}:{self.password}@{self.endpoint}:{self.port}/?tls=true&tlsCAFile={self.tlsPath}&replicaSet=rs0&readPreference=secondaryPreferred&retryWrites=false"
         
         # Attempt to create the connection object, database, and collection - if there is an issue with credentials or connectivity
@@ -162,7 +162,7 @@ class MongodbProvider(object):
             db = client[self.dbName]
             collection = db[self.collName]
         except errors.ConnectionError as e:
-            print(f"Connection or credential issue with MongoDB/AWS DocumentDB!")
+            print("Connection or credential issue with MongoDB/AWS DocumentDB!")
             raise e
         
         decodedFindings = [

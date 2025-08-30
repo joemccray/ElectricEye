@@ -233,7 +233,7 @@ def crawler_cloudwatch_encryption_check(cache: dict, session, awsAccountId: str,
         try:
             sec = glue.get_security_configuration(Name=response["Crawler"]["CrawlerSecurityConfiguration"])
             cwEncryptionCheck = str(sec["SecurityConfiguration"]["EncryptionConfiguration"]["CloudWatchEncryption"]["CloudWatchEncryptionMode"])
-        except:
+        except Exception:
             cwEncryptionCheck = "DISABLED"
         if cwEncryptionCheck == "DISABLED":
             finding = {
@@ -386,7 +386,7 @@ def crawler_job_bookmark_encryption_check(cache: dict, session, awsAccountId: st
         try:
             sec = glue.get_security_configuration(Name=response["Crawler"]["CrawlerSecurityConfiguration"])
             jobBookmarkEncryptionCheck = str(sec["SecurityConfiguration"]["EncryptionConfiguration"]["JobBookmarksEncryption"]["JobBookmarksEncryptionMode"])
-        except:
+        except Exception:
             jobBookmarkEncryptionCheck = "DISABLED"
         if jobBookmarkEncryptionCheck == "DISABLED":
             finding = {

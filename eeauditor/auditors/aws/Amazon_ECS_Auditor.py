@@ -631,7 +631,7 @@ def ecs_task_definition_security_labels_check(cache: dict, session, awsAccountId
                 cdefName = str(cdef["name"])
                 if cdef["dockerSecurityOptions"]:
                     # This is a passing check
-                    secOpts = str(cdef["dockerSecurityOptions"])
+                    str(cdef["dockerSecurityOptions"])
                     finding = {
                         "SchemaVersion": "2018-10-08",
                         "Id": f"{taskDefinitionArn}/{cdefName}/ecs-task-definition-security-labels-check",

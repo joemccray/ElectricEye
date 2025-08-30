@@ -45,7 +45,7 @@ def workspaces_user_volume_encryption_check(cache: dict, session, awsAccountId: 
         workspaceArn = (
             f"arn:{awsPartition}:workspaces:{awsRegion}:{awsAccountId}:workspace/{workspaceId}"
         )
-        if workspace["UserVolumeEncryptionEnabled"] == False:
+        if not workspace["UserVolumeEncryptionEnabled"]:
             finding = {
                 "SchemaVersion": "2018-10-08",
                 "Id": workspaceArn + "/workspaces-user-volume-encryption-check",
@@ -180,7 +180,7 @@ def workspaces_root_volume_encryption_check(cache: dict, session, awsAccountId: 
         workspaceArn = (
             f"arn:{awsPartition}:workspaces:{awsRegion}:{awsAccountId}:workspace/{workspaceId}"
         )
-        if workspace["RootVolumeEncryptionEnabled"] == False:
+        if not workspace["RootVolumeEncryptionEnabled"]:
             finding = {
                 "SchemaVersion": "2018-10-08",
                 "Id": workspaceArn + "/workspaces-root-volume-encryption-check",
@@ -447,7 +447,7 @@ def workspaces_directory_default_internet_check(cache: dict, session, awsAccount
         assetB64 = base64.b64encode(assetJson)
         workspacesDirectoryId = str(directory["DirectoryId"])
         workspacesDirectoryArn = f"arn:{awsPartition}:workspaces:{awsRegion}:{awsAccountId}:directory/{workspacesDirectoryId}"
-        if directory["WorkspaceCreationProperties"]["EnableInternetAccess"] == True:
+        if directory["WorkspaceCreationProperties"]["EnableInternetAccess"]:
             finding = {
                 "SchemaVersion": "2018-10-08",
                 "Id": workspacesDirectoryArn

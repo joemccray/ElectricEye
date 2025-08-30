@@ -359,7 +359,7 @@ def iamra_profiles_session_policy_check(cache: dict, session, awsAccountId: str,
         except KeyError:
             policySesh = False
         # this is a failing check
-        if policySesh == False:
+        if not policySesh:
             finding = {
                 "SchemaVersion": "2018-10-08",
                 "Id": f"{profileArn}/iamra-profile-session-policy-check",
@@ -686,7 +686,7 @@ def iamra_role_trust_policy_condition_check(cache: dict, session, awsAccountId: 
                 trustPolicy = json.loads(json.dumps(r["Role"]["AssumeRolePolicyDocument"]))
                 for statement in trustPolicy["Statement"]:
                     # this is a failing check
-                    if statement.get("Condition") == None:
+                    if statement.get("Condition") is None:
                         finding = {
                             "SchemaVersion": "2018-10-08",
                             "Id": f"{roleArn}/iamra-role-trust-policy-condition-check",

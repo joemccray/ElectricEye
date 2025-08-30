@@ -20,8 +20,8 @@
 
 import sys
 import click
-from eeauditor import EEAuditor
-from processor.main import get_providers, process_findings
+from .eeauditor import EEAuditor
+from .processor.main import get_providers, process_findings
 from os import environ
 
 def print_controls(assessmentTarget, args, useToml, auditorName=None, tomlPath=None):

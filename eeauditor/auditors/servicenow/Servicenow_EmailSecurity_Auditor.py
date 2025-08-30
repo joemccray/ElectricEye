@@ -76,7 +76,7 @@ def servicenow_sspm_convert_inbound_email_html_check(cache: dict, awsAccountId: 
     # as a failed finding with a lot less fan fair
     propFinder = next((sysprop for sysprop in sysPropCache if sysprop["name"] == evalTarget), False)
     # If we cannot find the property set "NOT_CONFIGURED" which will fail whatever the value should be
-    if propFinder == False:
+    if not propFinder:
         propertyValue = "NOT_CONFIGURED"
         propDescription = ""
         propId = ""
@@ -274,7 +274,7 @@ def servicenow_sspm_restrict_access_to_empty_target_table_emails_check(cache: di
     # as a failed finding with a lot less fan fair
     propFinder = next((sysprop for sysprop in sysPropCache if sysprop["name"] == evalTarget), False)
     # If we cannot find the property set "NOT_CONFIGURED" which will fail whatever the value should be
-    if propFinder == False:
+    if not propFinder:
         propertyValue = "NOT_CONFIGURED"
         propDescription = ""
         propId = ""
@@ -470,7 +470,7 @@ def servicenow_sspm_restrict_emails_by_domain_for_user_creation_check(cache: dic
     # as a failed finding with a lot less fan fair
     propFinder = next((sysprop for sysprop in sysPropCache if sysprop["name"] == evalTarget), False)
     # If we cannot find the property set "NOT_CONFIGURED" which will fail whatever the value should be
-    if propFinder == False:
+    if not propFinder:
         propertyValue = "NOT_CONFIGURED"
         propDescription = ""
         propId = ""

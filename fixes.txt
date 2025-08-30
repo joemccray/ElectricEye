@@ -1,0 +1,19 @@
+# Log of debugging steps for converting ElectricEye to a Django app
+
+1.  **Problem:** `pytest` failed with `ImportError: attempted relative import with no known parent package` in `tests/conftest.py`.
+    **Fix:** Created `tests/__init__.py` and `tests/helpers/__init__.py` to turn the directories into Python packages.
+
+2.  **Problem:** `pytest` was discovering and running tests from the `eeauditor/tests` directory, which were failing due to import errors.
+    **Fix:** Modified `pytest.ini` to add `norecursedirs = eeauditor/tests` to exclude the directory from test discovery.
+
+3.  **Problem:** `pytest` failed with `ModuleNotFoundError: No module named 'check_register'`.
+    **Fix:** Changed the import in `eeauditor/eeauditor.py` from `from check_register import CheckRegister` to `from .check_register import CheckRegister`.
+
+4.  **Problem:** `pytest` failed with `ModuleNotFoundError: No module named 'cloud_utils'`.
+    **Fix:** Changed the import in `eeauditor/eeauditor.py` from `from cloud_utils import CloudConfig` to `from .cloud_utils import CloudConfig`.
+
+5.  **Problem:** `pytest` failed with `ModuleNotFoundError: No module named 'azure'`.
+    **Fix:** Installed the `azure-identity` package.
+
+6.  **Problem:** `pytest` failed with `ModuleNotFoundError: No module named 'azure.mgmt'`.
+    **Fix:** Will install the `azure-mgmt-resource` package.

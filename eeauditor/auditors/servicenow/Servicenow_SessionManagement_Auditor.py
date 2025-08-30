@@ -76,7 +76,7 @@ def servicenow_sspm_absolute_session_timeout_check(cache: dict, awsAccountId: st
     # as a failed finding with a lot less fan fair
     propFinder = next((sysprop for sysprop in sysPropCache if sysprop["name"] == evalTarget), False)
     # If we cannot find the property set "NOT_CONFIGURED" which will fail whatever the value should be
-    if propFinder == False:
+    if not propFinder:
         propertyValue = "NOT_CONFIGURED"
         propDescription = ""
         propId = ""
@@ -279,7 +279,7 @@ def servicenow_sspm_anti_csrf_token_check(cache: dict, awsAccountId: str, awsReg
     # as a failed finding with a lot less fan fair
     propFinder = next((sysprop for sysprop in sysPropCache if sysprop["name"] == evalTarget), False)
     # If we cannot find the property set "NOT_CONFIGURED" which will fail whatever the value should be
-    if propFinder == False:
+    if not propFinder:
         propertyValue = "NOT_CONFIGURED"
         propDescription = ""
         propId = ""
@@ -475,7 +475,7 @@ def servicenow_sspm_cookies_http_only_check(cache: dict, awsAccountId: str, awsR
     # as a failed finding with a lot less fan fair
     propFinder = next((sysprop for sysprop in sysPropCache if sysprop["name"] == evalTarget), False)
     # If we cannot find the property set "NOT_CONFIGURED" which will fail whatever the value should be
-    if propFinder == False:
+    if not propFinder:
         propertyValue = "NOT_CONFIGURED"
         propDescription = ""
         propId = ""
@@ -671,7 +671,7 @@ def servicenow_sspm_csrf_strict_validation_check(cache: dict, awsAccountId: str,
     # as a failed finding with a lot less fan fair
     propFinder = next((sysprop for sysprop in sysPropCache if sysprop["name"] == evalTarget), False)
     # If we cannot find the property set "NOT_CONFIGURED" which will fail whatever the value should be
-    if propFinder == False:
+    if not propFinder:
         propertyValue = "NOT_CONFIGURED"
         propDescription = ""
         propId = ""
@@ -867,7 +867,7 @@ def servicenow_sspm_disable_passwordless_authentication_check(cache: dict, awsAc
     # as a failed finding with a lot less fan fair
     propFinder = next((sysprop for sysprop in sysPropCache if sysprop["name"] == evalTarget), False)
     # If we cannot find the property set "NOT_CONFIGURED" which will fail whatever the value should be
-    if propFinder == False:
+    if not propFinder:
         propertyValue = "NOT_CONFIGURED"
         propDescription = ""
         propId = ""
@@ -1063,7 +1063,7 @@ def servicenow_sspm_enable_mfa_check(cache: dict, awsAccountId: str, awsRegion: 
     # as a failed finding with a lot less fan fair
     propFinder = next((sysprop for sysprop in sysPropCache if sysprop["name"] == evalTarget), False)
     # If we cannot find the property set "NOT_CONFIGURED" which will fail whatever the value should be
-    if propFinder == False:
+    if not propFinder:
         propertyValue = "NOT_CONFIGURED"
         propDescription = ""
         propId = ""
@@ -1259,7 +1259,7 @@ def servicenow_sspm_enable_password_policy_check(cache: dict, awsAccountId: str,
     # as a failed finding with a lot less fan fair
     propFinder = next((sysprop for sysprop in sysPropCache if sysprop["name"] == evalTarget), False)
     # If we cannot find the property set "NOT_CONFIGURED" which will fail whatever the value should be
-    if propFinder == False:
+    if not propFinder:
         propertyValue = "NOT_CONFIGURED"
         propDescription = ""
         propId = ""
@@ -1455,7 +1455,7 @@ def servicenow_sspm_disable_password_autocomplete_check(cache: dict, awsAccountI
     # as a failed finding with a lot less fan fair
     propFinder = next((sysprop for sysprop in sysPropCache if sysprop["name"] == evalTarget), False)
     # If we cannot find the property set "NOT_CONFIGURED" which will fail whatever the value should be
-    if propFinder == False:
+    if not propFinder:
         propertyValue = "NOT_CONFIGURED"
         propDescription = ""
         propId = ""
@@ -1651,7 +1651,7 @@ def servicenow_sspm_remove_rememberme_check(cache: dict, awsAccountId: str, awsR
     # as a failed finding with a lot less fan fair
     propFinder = next((sysprop for sysprop in sysPropCache if sysprop["name"] == evalTarget), False)
     # If we cannot find the property set "NOT_CONFIGURED" which will fail whatever the value should be
-    if propFinder == False:
+    if not propFinder:
         propertyValue = "NOT_CONFIGURED"
         propDescription = ""
         propId = ""
@@ -1847,7 +1847,7 @@ def servicenow_sspm_rotate_http_session_ids_check(cache: dict, awsAccountId: str
     # as a failed finding with a lot less fan fair
     propFinder = next((sysprop for sysprop in sysPropCache if sysprop["name"] == evalTarget), False)
     # If we cannot find the property set "NOT_CONFIGURED" which will fail whatever the value should be
-    if propFinder == False:
+    if not propFinder:
         propertyValue = "NOT_CONFIGURED"
         propDescription = ""
         propId = ""
@@ -2043,7 +2043,7 @@ def servicenow_sspm_secure_session_cookies_check(cache: dict, awsAccountId: str,
     # as a failed finding with a lot less fan fair
     propFinder = next((sysprop for sysprop in sysPropCache if sysprop["name"] == evalTarget), False)
     # If we cannot find the property set "NOT_CONFIGURED" which will fail whatever the value should be
-    if propFinder == False:
+    if not propFinder:
         propertyValue = "NOT_CONFIGURED"
         propDescription = ""
         propId = ""
@@ -2247,7 +2247,7 @@ def servicenow_sspm_security_referral_policy_check(cache: dict, awsAccountId: st
     # as a failed finding with a lot less fan fair
     propFinder = next((sysprop for sysprop in sysPropCache if sysprop["name"] == evalTarget), False)
     # If we cannot find the property set "NOT_CONFIGURED" which will fail whatever the value should be
-    if propFinder == False:
+    if not propFinder:
         propertyValue = "NOT_CONFIGURED"
         propDescription = ""
         propId = ""
@@ -2443,7 +2443,7 @@ def servicenow_sspm_session_activity_timeout_check(cache: dict, awsAccountId: st
     # as a failed finding with a lot less fan fair
     propFinder = next((sysprop for sysprop in sysPropCache if sysprop["name"] == evalTarget), False)
     # If we cannot find the property set "NOT_CONFIGURED" which will fail whatever the value should be
-    if propFinder == False:
+    if not propFinder:
         propertyValue = "NOT_CONFIGURED"
         propDescription = ""
         propId = ""
@@ -2648,7 +2648,7 @@ def servicenow_sspm_session_window_timeout_check(cache: dict, awsAccountId: str,
     # as a failed finding with a lot less fan fair
     propFinder = next((sysprop for sysprop in sysPropCache if sysprop["name"] == evalTarget), False)
     # If we cannot find the property set "NOT_CONFIGURED" which will fail whatever the value should be
-    if propFinder == False:
+    if not propFinder:
         propertyValue = "NOT_CONFIGURED"
         propDescription = ""
         propId = ""

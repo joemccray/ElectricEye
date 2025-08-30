@@ -326,7 +326,7 @@ def aws_es_os_coginto_authentication_check(cache: dict, session, awsAccountId: s
         domainArn = response["DomainStatus"]["ARN"]
         try:
             cognitoEnabledCheck = response["DomainStatus"]["CognitoOptions"]["Enabled"]
-        except:
+        except Exception:
             cognitoEnabledCheck = False
         # this is a failing check
         if cognitoEnabledCheck is False:
@@ -1557,13 +1557,11 @@ def aws_elasticsearch_public_access_check(cache: dict, session, awsAccountId: st
         try:
             policyDoc = response["AccessPolicies"]
             policyJson = json.loads(policyDoc.encode().decode("unicode_escape"))
-            hasPolicy = True
             for sid in policyJson["Statement"]:
                 try:
-                    conditionCheck = str(sid["Condition"])
+                    str(sid["Condition"])
                     hasCondition = True
-                except:
-                    conditionCheck = ""
+                except Exception:
                     hasCondition = False
                 if str(sid["Principal"]) == '{"AWS": "*"}' and hasCondition is False:
                     policyAllowAnon = True
@@ -1573,7 +1571,6 @@ def aws_elasticsearch_public_access_check(cache: dict, session, awsAccountId: st
             policyDoc = ""
             policyJson = "NO_POLICY"
             policyAllowAnon = "NO_POLICY"
-            hasPolicy = False
         # Full Public Check
         if policyAllowAnon is True and vpcId == "NO_VPC" and cognitoEnabledCheck is False:
             fullPublic = True
@@ -1823,7 +1820,7 @@ def public_es_domain_shodan_check(cache: dict, session, awsAccountId: str, awsRe
         assetB64 = base64.b64encode(assetJson)
         esDomainName = response["DomainStatus"]["DomainName"]
         esVersion = response["DomainStatus"]["ElasticsearchVersion"]
-        domainId = response["DomainStatus"]["DomainId"]
+        response["DomainStatus"]["DomainId"]
         domainArn = response["DomainStatus"]["ARN"]
         # Determine if ES has Cognito Enabled
         try:
@@ -1843,10 +1840,9 @@ def public_es_domain_shodan_check(cache: dict, session, awsAccountId: str, awsRe
             hasPolicy = True
             for sid in policyJson["Statement"]:
                 try:
-                    conditionCheck = str(sid["Condition"])
+                    str(sid["Condition"])
                     hasCondition = True
-                except:
-                    conditionCheck = ""
+                except Exception:
                     hasCondition = False
                 if str(sid["Principal"]) == '{"AWS": "*"}' and hasCondition is False:
                     policyAllowAnon = True

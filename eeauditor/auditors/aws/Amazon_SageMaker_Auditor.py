@@ -537,7 +537,7 @@ def sagemaker_endpoint_encryption_check(cache: dict, session, awsAccountId: str,
                 "RecordState": "ARCHIVED",
             }
             yield finding
-        except:
+        except Exception:
             finding = {
                 "SchemaVersion": "2018-10-08",
                 "Id": endpointArn + "/sagemaker-endpoint-encryption-check",

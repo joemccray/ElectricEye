@@ -818,7 +818,7 @@ def emr_security_config_kerberos_check(cache: dict, session, awsAccountId: str, 
                     datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat()
                 )
                 try:
-                    kerbCheck = str(jsonConfig["AuthenticationConfiguration"])
+                    str(jsonConfig["AuthenticationConfiguration"])
                     finding = {
                         "SchemaVersion": "2018-10-08",
                         "Id": clusterArn + "/emr-kerberos-authn-check",

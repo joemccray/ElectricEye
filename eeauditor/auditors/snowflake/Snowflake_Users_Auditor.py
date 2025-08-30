@@ -125,7 +125,7 @@ def get_snowflake_users(cache: dict, snowflakeCursor: cursor.SnowflakeCursor) ->
     snowflakeUsers = []
 
     # Use the almighty SQL query to get all the users
-    query = f"""
+    query = """
     SELECT DISTINCT
         user_id,
         name,

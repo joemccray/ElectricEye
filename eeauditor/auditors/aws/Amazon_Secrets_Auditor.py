@@ -19,7 +19,6 @@
 #under the License.
 
 import datetime
-import time
 import os
 import json
 import botocore

@@ -8,4 +8,5 @@ class GreetingJob(models.Model):
     video_path = models.CharField(max_length=500)
     status = models.CharField(max_length=12, default="queued")
     result_url = models.URLField(null=True, blank=True)
+    greeting_message = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)

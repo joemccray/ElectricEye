@@ -12,6 +12,8 @@ STATE = ROOT / "docs" / "reference-sources.state.json"
 
 
 def fetch(url):
+    if not url.startswith("https://"):
+        raise ValueError("Invalid URL scheme")
     with urlopen(url, timeout=20) as r:
         return r.read()
 

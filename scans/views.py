@@ -1,3 +1,4 @@
+from django.db import transaction
 from rest_framework import viewsets
 
 from .models import Finding, Scan
@@ -15,7 +16,7 @@ class ScanViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         scan = serializer.save()
-        run_scan.delay(scan.id)
+        transaction.on_commit(lambda: run_scan.delay(scan.id))
 
 
 class FindingViewSet(viewsets.ReadOnlyModelViewSet):

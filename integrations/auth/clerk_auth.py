@@ -15,6 +15,8 @@ _JWKS_CACHE = {"ts": 0, "jwks": None}
 
 
 def _get_jwks():
+    if not CLERK_JWKS_URL.startswith("https://"):
+        raise exceptions.AuthenticationFailed("Invalid JWKS URL scheme")
     if _JWKS_CACHE["jwks"] and (time.time() - _JWKS_CACHE["ts"] < 3600):
         return _JWKS_CACHE["jwks"]
     with urlopen(CLERK_JWKS_URL, timeout=10) as r:
@@ -56,7 +58,7 @@ class ClerkJWTAuthentication(BaseAuthentication):
         auth = request.headers.get("Authorization", "")
         if not auth.startswith("Bearer "):
             return None
-        token = auth[len("Bearer ") :].strip()
+        token = auth[len("Bearer "):].strip()
         if not token:
             raise exceptions.AuthenticationFailed("Missing token")
         claims = _verify_jwt(token)

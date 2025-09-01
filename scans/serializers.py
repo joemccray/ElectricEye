@@ -6,7 +6,15 @@ from .models import Finding, Scan
 class FindingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Finding
-        fields = "__all__"
+        fields = (
+            "id",
+            "scan",
+            "check_name",
+            "resource_id",
+            "status",
+            "description",
+            "created_at",
+        )
 
 
 class ScanSerializer(serializers.ModelSerializer):
@@ -14,4 +22,12 @@ class ScanSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Scan
-        fields = "__all__"
+        fields = (
+            "id",
+            "provider",
+            "status",
+            "created_at",
+            "updated_at",
+            "findings",
+        )
+        read_only_fields = ("status", "findings")

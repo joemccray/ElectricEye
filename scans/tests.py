@@ -1,12 +1,21 @@
 from unittest.mock import patch
 
 import pytest
+from botocore.exceptions import ClientError
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient
 
 from .models import Finding, Scan
 from .tasks import run_scan
+
+
+@pytest.mark.django_db
+def test_unauthenticated_access():
+    client = APIClient()
+    url = reverse("scan-list")
+    response = client.get(url)
+    assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
 
 @pytest.mark.django_db
@@ -135,3 +144,60 @@ def test_run_scan_task_integration(MockEEAuditor):
     assert finding2.resource_id == "resource2"
     assert finding2.status == "pass"
     assert finding2.description == "This is a test finding 2."
+
+
+@pytest.mark.django_db
+@patch("scans.services.EEAuditor")
+def test_run_scan_service_client_error(MockEEAuditor):
+    # Mock the EEAuditor to raise a ClientError
+    mock_auditor_instance = MockEEAuditor.return_value
+    mock_auditor_instance.run_aws_checks.side_effect = ClientError(
+        {"Error": {"Code": "SomeError", "Message": "Details"}}, "OperationName"
+    )
+
+    # Create a scan
+    scan = Scan.objects.create(provider="AWS")
+
+    # Run the service
+    from .services import run_scan_service
+
+    with pytest.raises(ClientError):
+        run_scan_service(scan.id)
+
+    # Refresh the scan object from the database
+    scan.refresh_from_db()
+
+    # Assert that the scan is marked as failed
+    assert scan.status == "failed"
+
+
+@pytest.mark.django_db
+@patch("scans.services.EEAuditor")
+def test_run_scan_service_idempotency(MockEEAuditor):
+    # Create a scan
+    scan = Scan.objects.create(provider="AWS")
+
+    # Run the service
+    from .services import run_scan_service
+
+    run_scan_service(scan.id)
+
+    # Run the service again
+    run_scan_service(scan.id)
+
+    # Assert that the scan was only run once
+    MockEEAuditor.return_value.run_aws_checks.assert_called_once()
+
+
+@pytest.mark.django_db
+def test_scan_pagination(authed):
+    # Create more scans than the page size
+    for i in range(150):
+        Scan.objects.create(provider="AWS")
+
+    url = reverse("scan-list")
+    response = authed.get(url)
+
+    assert response.status_code == status.HTTP_200_OK
+    assert len(response.data["results"]) == 100
+    assert response.data["next"] is not None

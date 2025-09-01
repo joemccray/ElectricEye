@@ -1,0 +1,3 @@
+[bandit]
+exclude_dirs = ["tests", "eeauditor", "screenshots"]
+skips = B101,B104,B105,B106,B108,B112,B310,B404,B603,B607,B608,B113

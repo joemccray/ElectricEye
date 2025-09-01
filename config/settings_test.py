@@ -1,5 +1,4 @@
 from .settings import *  # noqa
-from .settings import INSTALLED_APPS
 
 DEBUG = True
 SECRET_KEY = "test-secret-key"

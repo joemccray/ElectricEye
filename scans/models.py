@@ -1,9 +1,11 @@
 from django.db import models
 
+
 class Scan(models.Model):
     """
     Represents a single audit scan.
     """
+
     STATUS_CHOICES = [
         ("pending", "Pending"),
         ("in_progress", "In Progress"),
@@ -19,10 +21,12 @@ class Scan(models.Model):
     def __str__(self):
         return f"Scan {self.id} for {self.provider} ({self.status})"
 
+
 class Finding(models.Model):
     """
     Represents a single finding from a scan.
     """
+
     STATUS_CHOICES = [
         ("pass", "Pass"),
         ("fail", "Fail"),

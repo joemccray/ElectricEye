@@ -1,6 +1,9 @@
 from celery import shared_task
-from .models import Scan, Finding
+
 from eeauditor.eeauditor import EEAuditor
+
+from .models import Finding, Scan
+
 
 @shared_task
 def run_scan(scan_id):
@@ -45,7 +48,11 @@ def run_scan(scan_id):
                 scan=scan,
                 check_name=finding.get("Title", "N/A"),
                 resource_id=finding.get("Resources", [{}])[0].get("Id", "N/A"),
-                status="fail" if finding.get("Compliance", {}).get("Status") == "FAILED" else "pass",
+                status=(
+                    "fail"
+                    if finding.get("Compliance", {}).get("Status") == "FAILED"
+                    else "pass"
+                ),
                 description=finding.get("Description", ""),
             )
 

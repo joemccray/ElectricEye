@@ -17,17 +17,20 @@ Usage:
 """
 
 from __future__ import annotations
-import sys
-import re
+
 import json
+import re
 import stat
+import sys
 from pathlib import Path
 
 BOLD = "\033[1m"
 RESET = "\033[0m"
 
+
 def info(msg: str) -> None:
     print(f"{BOLD}[jules-setup]{RESET} {msg}")
+
 
 def rel(p: Path, root: Path) -> Path:
     try:
@@ -35,7 +38,10 @@ def rel(p: Path, root: Path) -> Path:
     except Exception:
         return p
 
-def write(path: Path, content: str, executable: bool = False, root: Path | None = None) -> None:
+
+def write(
+    path: Path, content: str, executable: bool = False, root: Path | None = None
+) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     if not path.exists() or path.read_text(encoding="utf-8") != content:
         path.write_text(content, encoding="utf-8")
@@ -45,20 +51,25 @@ def write(path: Path, content: str, executable: bool = False, root: Path | None 
     if root:
         print("  - wrote", rel(path, root))
 
+
 def append_once(path: Path, lines: list[str], root: Path | None = None) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     existing = path.read_text(encoding="utf-8") if path.exists() else ""
     changed = False
     for ln in lines:
         if ln not in existing:
-            existing += ("" if existing.endswith("\n") or existing == "" else "\n") + ln + "\n"
+            existing += (
+                ("" if existing.endswith("\n") or existing == "" else "\n") + ln + "\n"
+            )
             changed = True
     if changed:
         path.write_text(existing, encoding="utf-8")
         if root:
             print("  - updated", rel(path, root))
 
+
 # ---------- Requirements ----------
+
 
 def upsert_requirements(root: Path) -> None:
     base = root / "requirements.txt"
@@ -90,15 +101,20 @@ def upsert_requirements(root: Path) -> None:
     append_once(base, want_base, root)
     append_once(dev, want_dev, root)
 
+
 # ---------- Settings detection & enforcement ----------
 
+
 def detect_settings(root: Path) -> Path | None:
-    for p in [root / "config" / "settings" / "base.py",
-              root / "config" / "settings.py",
-              root / "settings.py"]:
+    for p in [
+        root / "config" / "settings" / "base.py",
+        root / "config" / "settings.py",
+        root / "settings.py",
+    ]:
         if p.exists():
             return p
     return None
+
 
 def enforce_settings(settings_path: Path, root: Path) -> None:
     s = settings_path.read_text(encoding="utf-8") if settings_path.exists() else ""
@@ -114,25 +130,41 @@ def enforce_settings(settings_path: Path, root: Path) -> None:
             "MIDDLEWARE = ['django.middleware.security.SecurityMiddleware']\n"
         )
     if "rest_framework" not in s and "INSTALLED_APPS" in s:
-        s = re.sub(r"(INSTALLED_APPS\s*=\s*\[)", r"\1\n    'rest_framework',", s, count=1, flags=re.M)
+        s = re.sub(
+            r"(INSTALLED_APPS\s*=\s*\[)",
+            r"\1\n    'rest_framework',",
+            s,
+            count=1,
+            flags=re.M,
+        )
     if "whitenoise.middleware.WhiteNoiseMiddleware" not in s and "MIDDLEWARE" in s:
-        s = re.sub(r'("django.middleware.security.SecurityMiddleware",\s*)',
-                   r'\1\n    "whitenoise.middleware.WhiteNoiseMiddleware",\n',
-                   s, count=1)
+        s = re.sub(
+            r'("django.middleware.security.SecurityMiddleware",\s*)',
+            r'\1\n    "whitenoise.middleware.WhiteNoiseMiddleware",\n',
+            s,
+            count=1,
+        )
     if "STATIC_URL" not in s:
         s += "\nSTATIC_URL = '/static/'\n"
     if "from pathlib import Path" not in s:
         s = "from pathlib import Path\n" + s
     if "BASE_DIR" not in s:
-        s = "from pathlib import Path\nBASE_DIR = Path(__file__).resolve().parents[1]\n" + s
+        s = (
+            "from pathlib import Path\nBASE_DIR = Path(__file__).resolve().parents[1]\n"
+            + s
+        )
     if "STATIC_ROOT" not in s:
         s += "STATIC_ROOT = BASE_DIR / 'staticfiles'\n"
     if "STORAGES" not in s:
         s += "STORAGES = { 'staticfiles': { 'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage' } }\n"
     if "INSTALLED_APPS" in s and "'jobs'" not in s:
-        s = re.sub(r"(INSTALLED_APPS\s*=\s*\[)", r"\1\n    'jobs',", s, count=1, flags=re.M)
+        s = re.sub(
+            r"(INSTALLED_APPS\s*=\s*\[)", r"\1\n    'jobs',", s, count=1, flags=re.M
+        )
     if "CELERY_TASK_ALWAYS_EAGER" not in s:
-        s += "\n# For tests you may override to True\nCELERY_TASK_ALWAYS_EAGER = False\n"
+        s += (
+            "\n# For tests you may override to True\nCELERY_TASK_ALWAYS_EAGER = False\n"
+        )
     if "DJANGO_ENV" not in s:
         s += (
             "\nimport os\n"
@@ -146,7 +178,9 @@ def enforce_settings(settings_path: Path, root: Path) -> None:
     settings_path.write_text(s, encoding="utf-8")
     print("  - enforced", rel(settings_path, root))
 
+
 # ---------- CrewAI compat + import patcher (1) ----------
+
 
 def patch_crewai_imports(root: Path) -> None:
     """
@@ -179,12 +213,16 @@ except Exception:
         except Exception:
             continue
         if "from crewai import tool" in text:
-            new = text.replace("from crewai import tool", "from crewai_tool_compat import tool")
+            new = text.replace(
+                "from crewai import tool", "from crewai_tool_compat import tool"
+            )
             if new != text:
                 py.write_text(new, encoding="utf-8")
                 print("  - patched CrewAI import in", rel(py, root))
 
+
 # ---------- Makefile writer (2) ----------
+
 
 def write_makefile(root: Path) -> None:
     mf = root / "Makefile"
@@ -211,7 +249,9 @@ typecheck:
             mf.write_text(content, encoding="utf-8")
             print("  - normalized Makefile to use pytest + settings_test")
 
+
 # ---------- Helper: autodetect local Django apps (3) ----------
+
 
 def autodetect_local_apps(root: Path) -> list[str]:
     apps = []
@@ -222,7 +262,9 @@ def autodetect_local_apps(root: Path) -> list[str]:
             apps.append(pkg.name)
     return apps
 
+
 # ---------- URLs: ensure /healthz route (4) ----------
+
 
 def ensure_health_url(root: Path) -> None:
     urls = root / "config" / "urls.py"
@@ -242,7 +284,9 @@ def ensure_health_url(root: Path) -> None:
         urls.write_text(s, encoding="utf-8")
         print("  - added /healthz to config/urls.py")
 
+
 # ---------- Main ----------
+
 
 def main() -> None:
     root = Path(sys.argv[1]).resolve() if len(sys.argv) > 1 else Path.cwd()
@@ -251,7 +295,9 @@ def main() -> None:
 
     # Only run on Django repos
     if not (root / "manage.py").exists() and not (root / "config").exists():
-        info("No Django project detected (missing manage.py/config). Aborting with guidance.")
+        info(
+            "No Django project detected (missing manage.py/config). Aborting with guidance."
+        )
         print("Create a Django project first:")
         print("  python -m pip install 'Django>=5,<6'")
         print("  django-admin startproject config .")
@@ -290,15 +336,42 @@ pre-commit install
             {
                 "version": 1,
                 "sources": [
-                    {"name": "Django-Business-Logic", "url": "http://146.190.150.94/app-reference-docs/Django-Business-Logic.md"},
-                    {"name": "Django-clerk", "url": "http://146.190.150.94/app-reference-docs/Django-clerk.md"},
-                    {"name": "Django-Data-Flow", "url": "http://146.190.150.94/app-reference-docs/Django-Data-Flow.md"},
-                    {"name": "Django-REST-Framework-Cheat-Sheet", "url": "http://146.190.150.94/app-reference-docs/Django-REST-Framework-Cheat-Sheet.md"},
-                    {"name": "Django-CrewAI", "url": "http://146.190.150.94/app-reference-docs/Django-CrewAI.v2.md"},
-                    {"name": "Django-SaaS", "url": "http://146.190.150.94/app-reference-docs/Django-SaaS.md"},
-                    {"name": "Django-Freshdesk", "url": "http://146.190.150.94/app-reference-docs/Django-Freshdesk.md"},
-                    {"name": "Railway-Native-Django-Deployment-Tips", "url": "http://146.190.150.94/app-reference-docs/Railway-Native-Django-Deployment-Tips.md"},
-                    {"name": "Code-Review-Template", "url": "http://146.190.150.94/app-reference-docs/Code-Review-Template.md"},
+                    {
+                        "name": "Django-Business-Logic",
+                        "url": "http://146.190.150.94/app-reference-docs/Django-Business-Logic.md",
+                    },
+                    {
+                        "name": "Django-clerk",
+                        "url": "http://146.190.150.94/app-reference-docs/Django-clerk.md",
+                    },
+                    {
+                        "name": "Django-Data-Flow",
+                        "url": "http://146.190.150.94/app-reference-docs/Django-Data-Flow.md",
+                    },
+                    {
+                        "name": "Django-REST-Framework-Cheat-Sheet",
+                        "url": "http://146.190.150.94/app-reference-docs/Django-REST-Framework-Cheat-Sheet.md",
+                    },
+                    {
+                        "name": "Django-CrewAI",
+                        "url": "http://146.190.150.94/app-reference-docs/Django-CrewAI.v2.md",
+                    },
+                    {
+                        "name": "Django-SaaS",
+                        "url": "http://146.190.150.94/app-reference-docs/Django-SaaS.md",
+                    },
+                    {
+                        "name": "Django-Freshdesk",
+                        "url": "http://146.190.150.94/app-reference-docs/Django-Freshdesk.md",
+                    },
+                    {
+                        "name": "Railway-Native-Django-Deployment-Tips",
+                        "url": "http://146.190.150.94/app-reference-docs/Railway-Native-Django-Deployment-Tips.md",
+                    },
+                    {
+                        "name": "Code-Review-Template",
+                        "url": "http://146.190.150.94/app-reference-docs/Code-Review-Template.md",
+                    },
                 ],
             },
             indent=2,
@@ -417,7 +490,8 @@ if ! python3 scripts/verify_manifest.py --check 2>/dev/null; then
 fi
 echo "[jules] preflight OK"
 """,
-        executable=True, root=root,
+        executable=True,
+        root=root,
     )
     write(
         root / "scripts" / "restore_docs.py",
@@ -530,7 +604,8 @@ fi
 bash scripts/jules_preamble.sh
 echo "[apply_pack] OK"
 """,
-        executable=True, root=root,
+        executable=True,
+        root=root,
     )
     write(
         root / "scripts" / "jules_sync_docs.py",
@@ -580,7 +655,8 @@ black . || true
 isort . || true
 echo "[cleanup] done"
 """,
-        executable=True, root=root,
+        executable=True,
+        root=root,
     )
 
     # ADR helper
@@ -598,7 +674,8 @@ p = adr_dir / f"{idx:04d}-{slug}.md"
 p.write_text(f"# ADR {idx}: {title}\\nDate: {time.strftime('%Y-%m-%d')}\\n\\n## Status\\nProposed\\n\\n## Context\\n\\n## Decision\\n\\n## Consequences\\n\\n## References\\n", encoding="utf-8")
 print(p)
 """,
-        executable=True, root=root,
+        executable=True,
+        root=root,
     )
 
     # Integrations
@@ -942,7 +1019,8 @@ for p in pathlib.Path('.').rglob('*.sh'):
         sys.exit(1)
 print("No destructive commands detected.")
 """,
-        executable=True, root=root,
+        executable=True,
+        root=root,
     )
 
     # Agent prompt helpers
@@ -1082,6 +1160,7 @@ jobs:
     print("  - bash scripts/jules_preamble.sh  # preflight + manifest self-heal")
     print("  - pre-commit install")
     print("  - make test  # uses pytest + settings_test")
+
 
 if __name__ == "__main__":
     main()

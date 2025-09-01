@@ -1,7 +1,10 @@
-import requests
 import json
 
-data = requests.get("https://raw.githubusercontent.com/mitre/cti/master/enterprise-attack/enterprise-attack.json").text
+import requests
+
+data = requests.get(
+    "https://raw.githubusercontent.com/mitre/cti/master/enterprise-attack/enterprise-attack.json"
+).text
 
 data = json.loads(data)
 
@@ -18,10 +21,7 @@ for item in data["objects"]:
                 description = item["name"] + " : " + item["description"]
 
                 controls.append(
-                    {
-                        "ControlTitle": controlId,
-                        "ControlDescription": description
-                    }
+                    {"ControlTitle": controlId, "ControlDescription": description}
                 )
             else:
                 continue
@@ -29,9 +29,4 @@ for item in data["objects"]:
         continue
 
 with open("./new.json", "w") as jsonfile:
-    json.dump(
-        controls,
-        jsonfile,
-        indent=2,
-        default=str
-    )
+    json.dump(controls, jsonfile, indent=2, default=str)

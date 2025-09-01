@@ -22,10 +22,10 @@ import pytest
 
 from botocore.stub import Stubber
 
-from auditors.aws.AWS_ACM_Auditor import (
+from eeauditor.auditors.aws.AWS_ACM_Auditor import (
     certificate_status_check,
     certificate_renewal_status_check,
-    acm
+    acm,
 )
 
 list_certificates_response = {

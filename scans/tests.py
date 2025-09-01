@@ -1,10 +1,13 @@
+from unittest.mock import patch
+
 import pytest
 from django.urls import reverse
-from rest_framework.test import APIClient
 from rest_framework import status
-from .models import Scan, Finding
+from rest_framework.test import APIClient
+
+from .models import Finding, Scan
 from .tasks import run_scan
-from unittest.mock import patch
+
 
 @pytest.mark.django_db
 def test_scan_creation():
@@ -12,6 +15,7 @@ def test_scan_creation():
     assert scan.provider == "AWS"
     assert scan.status == "pending"
     assert str(scan) == f"Scan {scan.id} for AWS (pending)"
+
 
 @pytest.mark.django_db
 def test_finding_creation():
@@ -21,11 +25,12 @@ def test_finding_creation():
         check_name="test_check",
         resource_id="test_resource",
         status="fail",
-        description="This is a test finding."
+        description="This is a test finding.",
     )
     assert finding.scan == scan
     assert finding.check_name == "test_check"
     assert str(finding) == f"Finding for test_resource in scan {scan.id} (fail)"
+
 
 @pytest.mark.django_db
 def test_list_scans():
@@ -37,16 +42,17 @@ def test_list_scans():
     response = client.get(url)
 
     assert response.status_code == status.HTTP_200_OK
-    assert len(response.data['results']) == 2
+    assert len(response.data["results"]) == 2
+
 
 @pytest.mark.django_db
-@patch('scans.tasks.run_scan.delay')
+@patch("scans.tasks.run_scan.delay")
 def test_create_scan(mock_run_scan):
     client = APIClient()
     url = reverse("scan-list")
     data = {"provider": "AWS"}
 
-    response = client.post(url, data, format='json')
+    response = client.post(url, data, format="json")
 
     assert response.status_code == status.HTTP_201_CREATED
     assert Scan.objects.count() == 1
@@ -54,21 +60,35 @@ def test_create_scan(mock_run_scan):
     assert scan.provider == "AWS"
     mock_run_scan.assert_called_once_with(scan.id)
 
+
 @pytest.mark.django_db
 def test_list_findings():
     client = APIClient()
     scan = Scan.objects.create(provider="AWS")
-    Finding.objects.create(scan=scan, check_name="check1", resource_id="res1", status="pass", description="")
-    Finding.objects.create(scan=scan, check_name="check2", resource_id="res2", status="fail", description="")
+    Finding.objects.create(
+        scan=scan,
+        check_name="check1",
+        resource_id="res1",
+        status="pass",
+        description="",
+    )
+    Finding.objects.create(
+        scan=scan,
+        check_name="check2",
+        resource_id="res2",
+        status="fail",
+        description="",
+    )
 
     url = reverse("finding-list")
     response = client.get(url)
 
     assert response.status_code == status.HTTP_200_OK
-    assert len(response.data['results']) == 2
+    assert len(response.data["results"]) == 2
+
 
 @pytest.mark.django_db
-@patch('scans.tasks.EEAuditor')
+@patch("scans.tasks.EEAuditor")
 def test_run_scan_task_integration(MockEEAuditor):
     # Mock the EEAuditor instance and its methods
     mock_auditor_instance = MockEEAuditor.return_value
@@ -77,14 +97,14 @@ def test_run_scan_task_integration(MockEEAuditor):
             "Title": "Test Check 1",
             "Resources": [{"Id": "resource1"}],
             "Compliance": {"Status": "FAILED"},
-            "Description": "This is a test finding 1."
+            "Description": "This is a test finding 1.",
         },
         {
             "Title": "Test Check 2",
             "Resources": [{"Id": "resource2"}],
             "Compliance": {"Status": "PASSED"},
-            "Description": "This is a test finding 2."
-        }
+            "Description": "This is a test finding 2.",
+        },
     ]
 
     # Create a scan

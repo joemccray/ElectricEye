@@ -1,6 +1,7 @@
 import os
 import re
 
+
 def fix_linting_errors(directory):
     """
     This script automatically fixes some of the most common and repetitive
@@ -22,11 +23,16 @@ def fix_linting_errors(directory):
                 # E711: == None -> is None
                 content = re.sub(r" == None", " is None", content)
                 # E721: type() == -> isinstance()
-                content = re.sub(r"type\((.*?)\) == str", r"isinstance(\1, str)", content)
-                content = re.sub(r"type\((.*?)\) == list", r"isinstance(\1, list)", content)
+                content = re.sub(
+                    r"type\((.*?)\) == str", r"isinstance(\1, str)", content
+                )
+                content = re.sub(
+                    r"type\((.*?)\) == list", r"isinstance(\1, list)", content
+                )
 
                 with open(filepath, "w") as f:
                     f.write(content)
+
 
 if __name__ == "__main__":
     fix_linting_errors("eeauditor")

@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/5.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
+
 import os
 from pathlib import Path
 
@@ -20,7 +21,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "django-insecure-$v8%rbq95vabtww5r)o@9dju^yh9o9(=htv91#lf0syrm=v63p")
+SECRET_KEY = os.getenv(
+    "DJANGO_SECRET_KEY",
+    "django-insecure-$v8%rbq95vabtww5r)o@9dju^yh9o9(=htv91#lf0syrm=v63p",
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -31,9 +35,10 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'scans',
-    'eeauditor',
-    'rest_framework',
+    "jobs",
+    "scans",
+    "eeauditor",
+    "rest_framework",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -44,9 +49,8 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
-
     "whitenoise.middleware.WhiteNoiseMiddleware",
-"django.contrib.sessions.middleware.SessionMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -125,15 +129,19 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-STATIC_ROOT = BASE_DIR / 'staticfiles'
-STORAGES = { 'staticfiles': { 'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage' } }
+STATIC_ROOT = BASE_DIR / "staticfiles"
+STORAGES = {
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"
+    }
+}
 
 # For tests you may override to True
 CELERY_TASK_ALWAYS_EAGER = False
 
-ENV = os.getenv('DJANGO_ENV','development')
-if ENV == 'production':
+ENV = os.getenv("DJANGO_ENV", "development")
+if ENV == "production":
     DEBUG = False
-    assert os.getenv('DATABASE_URL'), 'DATABASE_URL required in production'
-    if os.getenv('ALLOW_DESTRUCTIVE','0') != '1':
-        os.environ['DJANGO_SUPPRESS_MGMT_WARN'] = '1'
+    assert os.getenv("DATABASE_URL"), "DATABASE_URL required in production"
+    if os.getenv("ALLOW_DESTRUCTIVE", "0") != "1":
+        os.environ["DJANGO_SUPPRESS_MGMT_WARN"] = "1"

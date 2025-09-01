@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "local-backend"
+version = "0.0.0"
+description = "Local backend (auto-discovered packages)"
+requires-python = ">=3.10"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["*"]
+exclude = ["tests*", "*tests*", "e2e*", "docs*", "scripts*", "node_modules*", "dist*", "build*"]

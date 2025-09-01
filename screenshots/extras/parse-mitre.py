@@ -3,7 +3,8 @@ import json
 import requests
 
 data = requests.get(
-    "https://raw.githubusercontent.com/mitre/cti/master/enterprise-attack/enterprise-attack.json"
+    "https://raw.githubusercontent.com/mitre/cti/master/enterprise-attack/enterprise-attack.json",
+    timeout=10,
 ).text
 
 data = json.loads(data)
